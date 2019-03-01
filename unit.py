@@ -61,9 +61,9 @@ class MainUnit:
 
 
 class WallMg(pygame.sprite.Sprite):
-    def __init__(self, group):
+    def __init__(self, group, parent):
         super().__init__(group)
-        self.image = wall.image
+        self.image = parent.image
         self.rect = self.image.get_rect()
 
 
@@ -77,15 +77,15 @@ class Wall(MainUnit):
 
     def render(self, **kwargs):
         # sprite = pygame.sprite.Sprite()
-        m_wall = WallMg(self.all_sprites)
+        m_wall = WallMg(self.all_sprites, self)
         m_wall.rect.x = self.coord[0]
         m_wall.rect.y = self.coord[1]
 
 
 class CastleMgBlue(pygame.sprite.Sprite):
-    def __init__(self, group):
+    def __init__(self, group, parent):
         super().__init__(group)
-        self.image = castle_blue.image
+        self.image = parent.image
         self.rect = self.image.get_rect()
 
 
@@ -102,15 +102,15 @@ class CastleBlue(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
-        m_castle = CastleMgBlue(self.all_sprites)
+        m_castle = CastleMgBlue(self.all_sprites, self)
         m_castle.rect.x = self.coord[0] + 1
         m_castle.rect.y = self.coord[1] + 1
 
 
 class CastleMgRed(pygame.sprite.Sprite):
-    def __init__(self, group):
+    def __init__(self, group, parent):
         super().__init__(group)
-        self.image = castle_red.image
+        self.image = parent.image
         self.rect = self.image.get_rect()
 
 
@@ -127,11 +127,7 @@ class CastleRed(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
-        m_castle = CastleMgRed(self.all_sprites)
+        m_castle = CastleMgRed(self.all_sprites, self)
         m_castle.rect.x = self.coord[0] + 1
         m_castle.rect.y = self.coord[1] + 1
 
-
-wall = Wall([100, 100], screen)
-castle_blue = CastleBlue([100, 100], screen)
-castle_red = CastleRed([100, 100], screen)
