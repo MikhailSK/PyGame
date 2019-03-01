@@ -16,7 +16,7 @@ class Board:
     def __init__(self, width, height, screen):
         self.screen = screen
         self.color = {0: (0, 0, 0), -1: (0, 150, 50),
-                      1: (255, 150, 0), 2: (0, 110, 10), 11: (100, 190, 14), 22: (14, 120, 179)}
+                      1: (255, 150, 0), 2: (0, 110, 10), 11: (107, 24, 255), 22: (255, 93, 25)}
         self.xod = -1
         self.width_board = width
         self.height_board = height
@@ -42,6 +42,7 @@ class Board:
         step = self.cell_size
         x_pos, y_pos = 0, 0
         for x in range(self.left, self.width_board * step, step):
+            y_pos = 0
             for y in range(self.top, self.height_board * step, step):
                 pygame.draw.rect(self.screen, (150, 190, 16),
                                  (x, y, 30, 30), 1)
@@ -57,16 +58,30 @@ class Board:
                             m_par = 11
                         elif self.board[x_pos + 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23):
                             m_par = 22
+                    else:
+                        if self.board[x_pos + 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos - 1] in range(12, 13)\
+                                or self.board[x_pos][y_pos + 1] in range(12, 13):
+                            m_par = 11
+                        elif self.board[x_pos + 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23)\
+                                or self.board[x_pos][y_pos + 1] in range(22, 23):
+                            m_par = 22
                 elif x_pos == BOARD_W - 1:
                     if y_pos == 0:
                         if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos + 1] in range(12, 13):
                             m_par = 11
                         elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos + 1] in range(22, 23):
                             m_par = 22
-                    if y_pos == BOARD_H - 1:
+                    elif y_pos == BOARD_H - 1:
                         if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos - 1] in range(12, 13):
                             m_par = 11
                         elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23):
+                            m_par = 22
+                    else:
+                        if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos - 1] in range(12, 13)\
+                                or self.board[x_pos][y_pos + 1] in range(12, 13):
+                            m_par = 11
+                        elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23)\
+                                or self.board[x_pos][y_pos + 1] in range(22, 23):
                             m_par = 22
                 else:
                     if y_pos == BOARD_H - 1:
@@ -90,9 +105,9 @@ class Board:
                         elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos + 1] in range(22, 23)\
                                 or self.board[x_pos + 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos + 1] in range(22, 23):
                             m_par = 22
-
-                pygame.draw.rect(self.screen, self.color[m_par],
-                                 (x, y, 30, 30), 1)
+                if m_par != 0:
+                    pygame.draw.rect(self.screen, self.color[m_par],
+                                     (x, y, 30, 30), 1)
                 y_pos += 1
             x_pos += 1
 
