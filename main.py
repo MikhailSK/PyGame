@@ -1,12 +1,7 @@
-import pygame
-import random
-import numpy as np
-from Board import Board, BOARD_H, BOARD_W, BOARD_S
+from Board import Board
+from screen import *
 
 
-size = width, height = BOARD_W * BOARD_S + 20,\
-                       BOARD_H * BOARD_S + 20
-screen = pygame.display.set_mode(size)
 board = Board(BOARD_W, BOARD_H, screen)
 screen.fill((0, 0, 0))
 
