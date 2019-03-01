@@ -2,7 +2,6 @@ import pygame
 import os
 from screen import *
 
-End_game = 0
 pygame.init()
 time = pygame.time.Clock()
 
