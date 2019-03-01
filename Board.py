@@ -2,10 +2,8 @@ import pygame
 import random
 import numpy as np
 from unit import *
+from screen import *
 
-BOARD_W = 23
-BOARD_H = 17
-BOARD_S = 30
 arr_wall = [[11, 16], [11, 0], [11, 4], [11, 12], [7, 10],
             [7, 6], [15, 6], [15, 10], [19, 2],
             [19, 14], [3, 14], [3, 2], [11, 8]]
@@ -108,7 +106,7 @@ class Board:
             try:
                 print(map_units[(x_pos, y_pos)])
                 unit = map_units[(x_pos, y_pos)]
-                unit.get_damage(1)
+                unit.get_damage(5)
                 print(unit.health)
             except KeyError:
                 print("Try other")

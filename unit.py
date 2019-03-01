@@ -1,11 +1,10 @@
 import pygame
 import os
+from screen import *
 
 BOARD_S = 30
 
 pygame.init()
-size = width, height = 100, 100
-screen = pygame.display.set_mode(size)
 time = pygame.time.Clock()
 
 unit_sprites = pygame.sprite.Group()
@@ -13,7 +12,7 @@ sprite = pygame.sprite.Sprite()
 
 
 def win(winer):
-    pass
+    screen.fill((0, 0, 0))
 
 
 def load_image(name, color_key=None):
