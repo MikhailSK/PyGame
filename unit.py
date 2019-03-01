@@ -2,8 +2,7 @@ import pygame
 import os
 from screen import *
 
-BOARD_S = 30
-
+End_game = 0
 pygame.init()
 time = pygame.time.Clock()
 
@@ -13,6 +12,7 @@ sprite = pygame.sprite.Sprite()
 
 def win(winer):
     screen.fill((0, 0, 0))
+    print(winer)
 
 
 def load_image(name, color_key=None):
@@ -77,6 +77,7 @@ class Wall(MainUnit):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "wall"
+        self.health = 900000
         self.coord = coord
         self.image = load_image(self.name + ".png")
 
