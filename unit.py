@@ -8,9 +8,12 @@ size = width, height = 100, 100
 screen = pygame.display.set_mode(size)
 time = pygame.time.Clock()
 
-
 unit_sprites = pygame.sprite.Group()
 sprite = pygame.sprite.Sprite()
+
+
+def win(winer):
+    pass
 
 
 def load_image(name, color_key=None):
@@ -34,7 +37,7 @@ class MainUnit:
         self.name = ""
         self.atk = 0
         self.move = 0
-        self.coord = [-1, -1]
+        self.coord = [1, 1]
         self.x, self.y = self.coord[0] * BOARD_S + 10, self.coord[1] * BOARD_S + 10
         self.type = -1
         self.atk_range = 0
@@ -57,7 +60,10 @@ class MainUnit:
         pass
 
     def dead(self):
+        print(self.x, self.y)
         pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
+        pygame.display.flip()
+        print("DEAD")
 
 
 class WallMg(pygame.sprite.Sprite):
@@ -95,9 +101,9 @@ class CastleBlue(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "blue_castle"
         self.coord = coord
-#
+        #
         self.health = 15
-#
+        #
         self.max_health = 15
         self.image = load_image(self.name + ".png")
 
@@ -105,6 +111,14 @@ class CastleBlue(MainUnit):
         m_castle = CastleMgBlue(self.all_sprites, self)
         m_castle.rect.x = self.coord[0] + 1
         m_castle.rect.y = self.coord[1] + 1
+
+    def dead(self):
+        self.x, self.y = self.coord[0], self.coord[1]
+        print(self.x, self.y)
+        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
+        pygame.display.flip()
+        print("DEAD")
+        win("Red")
 
 
 class CastleMgRed(pygame.sprite.Sprite):
@@ -120,9 +134,9 @@ class CastleRed(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "red_castle"
         self.coord = coord
-#
+        #
         self.health = 15
-#
+        #
         self.max_health = 15
         self.image = load_image(self.name + ".png")
 
@@ -131,3 +145,9 @@ class CastleRed(MainUnit):
         m_castle.rect.x = self.coord[0] + 1
         m_castle.rect.y = self.coord[1] + 1
 
+    def dead(self):
+        self.x, self.y = self.coord[0], self.coord[1]
+        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
+        pygame.display.flip()
+        print("DEAD")
+        win("Blue")

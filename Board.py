@@ -75,7 +75,6 @@ class Board:
             self.board[arr_castle[1][0]][arr_castle[1][1]] = 2
             map_units[(arr_castle[1][0], arr_castle[1][1])]\
                 = castle_red
-            print(map_units)
 
             pygame.display.flip()
 
@@ -106,7 +105,13 @@ class Board:
                               BOARD_S + 10,
                               int(y_pos) *
                               BOARD_S + 10, 30, 30), 1)
-            print(map_units[(x_pos, y_pos)])
+            try:
+                print(map_units[(x_pos, y_pos)])
+                unit = map_units[(x_pos, y_pos)]
+                unit.get_damage(1)
+                print(unit.health)
+            except KeyError:
+                print("Try other")
 
     def get_click(self, mouse_pos):
         self.get_cell(mouse_pos)
