@@ -1,4 +1,3 @@
-import pygame
 import os
 from screen import *
 
@@ -9,9 +8,9 @@ unit_sprites = pygame.sprite.Group()
 sprite = pygame.sprite.Sprite()
 
 
-def win(winer):
+def win(winner):
     screen.fill((0, 0, 0))
-    print(winer)
+    print(winner)
 
 
 def load_image(name, color_key=None):
@@ -81,7 +80,6 @@ class Wall(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
-        # sprite = pygame.sprite.Sprite()
         m_wall = WallMg(self.all_sprites, self)
         m_wall.rect.x = self.coord[0]
         m_wall.rect.y = self.coord[1]
@@ -117,7 +115,8 @@ class CastleBlue(MainUnit):
         pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
         pygame.display.flip()
         print("DEAD")
-        win("Red")
+        winner = "Red"
+        win(winner)
 
 
 class CastleMgRed(pygame.sprite.Sprite):

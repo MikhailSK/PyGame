@@ -1,5 +1,3 @@
-import pygame
-import random
 import numpy as np
 from unit import *
 from screen import *
@@ -16,7 +14,9 @@ class Board:
     def __init__(self, width, height, screen):
         self.screen = screen
         self.color = {0: (0, 0, 0), -1: (0, 150, 50),
-                      1: (255, 150, 0), 2: (0, 110, 10), 11: (107, 24, 255), 22: (255, 93, 25)}
+                      1: (255, 150, 0), 2: (0, 110, 10),
+                      11: (107, 24, 255), 22: (255, 93, 25),
+                      12: (0, 150, 50), "frame": (40, 154, 65)}
         self.xod = -1
         self.width_board = width
         self.height_board = height
@@ -49,61 +49,129 @@ class Board:
                 m_par = 0
                 if x_pos == 0:
                     if y_pos == 0:
-                        if self.board[x_pos + 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos + 1] in range(12, 13):
+                        if self.board[x_pos + 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos + 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos + 1] in range(22, 23):
+                        elif self.board[x_pos + 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(22, 23):
                             m_par = 22
                     elif y_pos == BOARD_H - 1:
-                        if self.board[x_pos + 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos - 1] in range(12, 13):
+                        if self.board[x_pos + 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos + 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23):
+                        elif self.board[x_pos + 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(22, 23):
                             m_par = 22
                     else:
-                        if self.board[x_pos + 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos - 1] in range(12, 13)\
-                                or self.board[x_pos][y_pos + 1] in range(12, 13):
+                        if self.board[x_pos + 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos + 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23)\
-                                or self.board[x_pos][y_pos + 1] in range(22, 23):
+                        elif self.board[x_pos + 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(22, 23):
                             m_par = 22
                 elif x_pos == BOARD_W - 1:
                     if y_pos == 0:
-                        if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos + 1] in range(12, 13):
+                        if self.board[x_pos - 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos + 1] in range(22, 23):
+                        elif self.board[x_pos - 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(22, 23):
                             m_par = 22
                     elif y_pos == BOARD_H - 1:
-                        if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos - 1] in range(12, 13):
+                        if self.board[x_pos - 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23):
+                        elif self.board[x_pos - 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(22, 23):
                             m_par = 22
                     else:
-                        if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos - 1] in range(12, 13)\
-                                or self.board[x_pos][y_pos + 1] in range(12, 13):
+                        if self.board[x_pos - 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23)\
-                                or self.board[x_pos][y_pos + 1] in range(22, 23):
+                        elif self.board[x_pos - 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(22, 23):
                             m_par = 22
                 else:
                     if y_pos == BOARD_H - 1:
-                        if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos - 1] in range(12, 13)\
-                                or self.board[x_pos + 1][y_pos] in range(12, 13):
+                        if self.board[x_pos - 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(12, 13) \
+                                or self.board[x_pos + 1][y_pos] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos - 1] in range(22, 23)\
-                                or self.board[x_pos + 1][y_pos] in range(22, 23):
+                        elif self.board[x_pos - 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(22, 23) \
+                                or self.board[x_pos + 1][y_pos] \
+                                in range(22, 23):
                             m_par = 22
                     elif y_pos == 0:
-                        if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos + 1] in range(12, 13)\
-                                or self.board[x_pos + 1][y_pos] in range(12, 13):
+                        if self.board[x_pos - 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(12, 13) \
+                                or self.board[x_pos + 1][y_pos] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos + 1] in range(22, 23)\
-                                or self.board[x_pos + 1][y_pos] in range(22, 23):
+                        elif self.board[x_pos - 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(22, 23) \
+                                or self.board[x_pos + 1][y_pos] \
+                                in range(22, 23):
                             m_par = 22
                     else:
-                        if self.board[x_pos - 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos + 1] in range(12, 13)\
-                                or self.board[x_pos + 1][y_pos] in range(12, 13) or self.board[x_pos][y_pos + 1] in range(12, 13):
+                        if self.board[x_pos - 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(12, 13) \
+                                or self.board[x_pos + 1][y_pos] \
+                                in range(12, 13) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(12, 13):
                             m_par = 11
-                        elif self.board[x_pos - 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos + 1] in range(22, 23)\
-                                or self.board[x_pos + 1][y_pos] in range(22, 23) or self.board[x_pos][y_pos + 1] in range(22, 23):
+                        elif self.board[x_pos - 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(22, 23) \
+                                or self.board[x_pos + 1][y_pos] \
+                                in range(22, 23) \
+                                or self.board[x_pos][y_pos + 1] \
+                                in range(22, 23):
                             m_par = 22
                 if m_par != 0:
                     pygame.draw.rect(self.screen, self.color[m_par],
@@ -127,7 +195,7 @@ class Board:
             castle_blue.render()
             castle_blue.all_sprites.draw(screen)
             self.board[arr_castle[0][0]][arr_castle[0][1]] = 12
-            map_units[(arr_castle[0][0], arr_castle[0][1])]\
+            map_units[(arr_castle[0][0], arr_castle[0][1])] \
                 = castle_blue
 
             castle_red = CastleRed([int(arr_castle[1][0]) *
@@ -137,16 +205,24 @@ class Board:
             castle_red.render()
             castle_red.all_sprites.draw(screen)
             self.board[arr_castle[1][0]][arr_castle[1][1]] = 22
-            map_units[(arr_castle[1][0], arr_castle[1][1])]\
+            map_units[(arr_castle[1][0], arr_castle[1][1])] \
                 = castle_red
 
+            pygame.draw.rect(screen, self.color["frame"],
+                             (5, 10, 5, 510))
+            pygame.draw.rect(screen, self.color["frame"],
+                             (700, 10, 5, 510))
+            pygame.draw.rect(screen, self.color["frame"],
+                             (5, 5, 700, 5))
+            pygame.draw.rect(screen, self.color["frame"],
+                             (5, 520, 700, 5))
             pygame.display.flip()
 
             self.is_map_rendered = 1
 
     def get_cell(self, mouse_position):
         x_pos, y_pos = mouse_position
-        if (x_pos <= 5 or x_pos >= self.width - 5) or\
+        if (x_pos <= 5 or x_pos >= self.width - 5) or \
                 (y_pos <= 5 or y_pos >= self.height - 5):
             print("miss", x_pos, y_pos, sep="-------")
             self.b_x_y = None

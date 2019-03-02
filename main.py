@@ -1,5 +1,5 @@
 from Board import Board
-from screen import *
+from unit import *
 
 
 board = Board(BOARD_W, BOARD_H, screen)
@@ -21,6 +21,5 @@ while running:
         if event.type == pygame.MOUSEBUTTONUP:
             board.get_click(event.pos)
             par *= -1
-
     pygame.display.flip()
     clock.tick(FPS)
