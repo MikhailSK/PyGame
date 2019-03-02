@@ -4,6 +4,8 @@ from screen import *
 pygame.init()
 time = pygame.time.Clock()
 
+map_units = {}
+
 unit_sprites = pygame.sprite.Group()
 sprite = pygame.sprite.Sprite()
 
@@ -27,6 +29,39 @@ def load_image(name, color_key=None):
     except pygame.error as message:
         print('Cannot load image:', name)
         raise SystemExit(message)
+
+
+class CreateUnit(pygame.sprite.Sprite):
+    image = load_image("create_unit.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = CreateUnit.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 10
+        self.rect.y = 538
+
+
+class WarriorUnitSelectB(pygame.sprite.Sprite):
+    image = load_image("warrior_b.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = WarriorUnitSelectB.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 90
+        self.rect.y = 538
+
+
+class WarriorUnitSelectR(pygame.sprite.Sprite):
+    image = load_image("warrior_r.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = WarriorUnitSelectR.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 124
+        self.rect.y = 538
 
 
 class MainUnit:
@@ -198,3 +233,71 @@ class CastleRed(MainUnit):
         pygame.display.flip()
         print("DEAD")
         win("Blue")
+
+
+class WarriorMgRed(pygame.sprite.Sprite):
+    def __init__(self, group, parent):
+        super().__init__(group)
+        self.image = parent.image
+        self.rect = self.image.get_rect()
+
+
+class WarriorRed(MainUnit):
+    def __init__(self, coord, screen):
+        super().__init__(screen)
+        self.all_sprites = pygame.sprite.Group()
+        self.name = "warrior_r"
+        self.coord = coord
+        self.damage = 1
+        self.move = 1
+        self.atk_range = 1
+        #
+        self.health = 5
+        #
+        self.max_health = 5
+        self.image = load_image(self.name + ".png")
+
+    def render(self, **kwargs):
+        m_castle = CastleMgRed(self.all_sprites, self)
+        m_castle.rect.x = self.coord[0] + 1
+        m_castle.rect.y = self.coord[1] + 1
+
+    def dead(self):
+        self.x, self.y = self.coord[0], self.coord[1]
+        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
+        pygame.display.flip()
+        print("DEAD" + self.name)
+
+
+class WarriorMgRed(pygame.sprite.Sprite):
+    def __init__(self, group, parent):
+        super().__init__(group)
+        self.image = parent.image
+        self.rect = self.image.get_rect()
+
+
+class WarriorBlue(MainUnit):
+    def __init__(self, coord, screen):
+        super().__init__(screen)
+        self.all_sprites = pygame.sprite.Group()
+        self.name = "warrior_b"
+        self.coord = coord
+        self.damage = 1
+        self.move = 1
+        self.atk_range = 1
+        #
+        self.health = 5
+        #
+        self.max_health = 5
+        self.image = load_image(self.name + ".png")
+
+    def render(self, **kwargs):
+        m_castle = CastleMgRed(self.all_sprites, self)
+        m_castle.rect.x = self.coord[0] + 1
+        m_castle.rect.y = self.coord[1] + 1
+
+    def dead(self):
+        self.x, self.y = self.coord[0], self.coord[1]
+        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
+        pygame.display.flip()
+        print("DEAD" + self.name)

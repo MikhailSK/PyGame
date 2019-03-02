@@ -1,5 +1,6 @@
 import pygame
 
+
 BOARD_W = 23
 BOARD_H = 17
 BOARD_S = 30

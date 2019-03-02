@@ -6,21 +6,11 @@ arr_wall = [[11, 16], [11, 0], [11, 4], [11, 12], [7, 10],
             [7, 6], [15, 6], [15, 10], [19, 2],
             [19, 14], [3, 14], [3, 2], [11, 8]]
 arr_castle = [[0, 8], [22, 8]]
-map_units = {}
-sprite = pygame.sprite.Sprite()
 
-
-# class EndButtonMg(pygame.sprite.Sprite):
-#     def __init__(self, group):
-#         super().__init__(group)
-#         self.all_sprites = pygame.sprite.Group()
-#         self.image = load_image("end_game")
-#         self.rect = self.image.get_rect()
-#
-#     def render(self):
-#         m_castle = EndButtonMg(self.all_sprites)
-#         m_castle.rect.x = 600
-#         m_castle.rect.y = 600
+all_sprites = pygame.sprite.Group()
+warrior_select_r = WarriorUnitSelectR(all_sprites)
+warrior_select_b = WarriorUnitSelectB(all_sprites)
+create_unit = CreateUnit(all_sprites)
 
 
 class Board:
@@ -46,6 +36,8 @@ class Board:
         self.b_x_y = None
         self.is_map_rendered = 0
         self.arr = []
+        self.par_click = 0
+        self.select = None
 
     # настройка внешнего вида
     def set_view(self, left, top, cell_size):
@@ -243,28 +235,81 @@ class Board:
 
             self.is_map_rendered = 1
 
-    def get_cell(self, mouse_position, turn):
+    def get_cell(self, mouse_position):
         x_pos, y_pos = mouse_position
-        if (x_pos <= 5 or x_pos >= self.width - 5) or \
-                (y_pos <= 5 or y_pos >= self.height - 5):
-            if sprite.rect.collidepoint((x_pos, y_pos)):
-                print("END TURN")
-                if self.turn == 1:
-                    self.turn = 2
-                elif self.turn == 2:
-                    self.turn = 1
-            else:
-                print("miss", x_pos, y_pos, sep="-------")
-                self.b_x_y = None
-        else:
-            b_x_pos = (x_pos - 10) // 30
-            b_y_pos = (y_pos - 10) // 30
-            print(b_x_pos, b_y_pos)
-            self.b_x_y = []
-            self.b_x_y.append(b_x_pos)
-            self.b_x_y.append(b_y_pos)
-            self.arr.append([b_x_pos, b_y_pos])
-            # self.board[b_x_pos][b_y_pos] = 1
+        if self.par_click == 0 or self.par_click == 2:
+            if ((x_pos <= 5 or x_pos >= self.width - 5)
+                or (y_pos <= 5 or y_pos >= self.height - 5))\
+                    and self.select is None:
+                    if self.par_click != 2:
+                        if sprite.rect.collidepoint((x_pos, y_pos)):
+                            print("END TURN")
+                            if self.turn == 1:
+                                self.turn = 2
+
+                                pygame.draw.rect(screen, (125, 120, 74),
+                                                 (724, 525, 200, 70))
+
+                                font = pygame.font.Font(None, 40)
+                                text = font.render("RED",
+                                                   1, (218, 22, 10))
+                                text_x = 795
+                                text_y = 550
+                                screen.blit(text, (text_x, text_y))
+
+                            elif self.turn == 2:
+                                self.turn = 1
+
+                                pygame.draw.rect(screen, (125, 120, 74),
+                                                 (790, 525, 70, 70))
+
+                                font = pygame.font.Font(None, 40)
+                                text = font.render("BLUE",
+                                                   1, (28, 22, 210))
+                                text_x = 788
+                                text_y = 550
+                                screen.blit(text, (text_x, text_y))
+                        elif create_unit.rect.collidepoint((x_pos, y_pos)):
+                            print("CREATE NEW")
+                            self.par_click = 10
+                        else:
+                            print("miss", x_pos, y_pos, sep="-------")
+                        self.b_x_y = None
+            elif (self.select is not None and self.par_click == 2) or self.par_click == 0 or self.par_click == 2:
+                b_x_pos = (x_pos - 10) // 30
+                b_y_pos = (y_pos - 10) // 30
+                print(b_x_pos, b_y_pos)
+                self.b_x_y = []
+                self.b_x_y.append(b_x_pos)
+                self.b_x_y.append(b_y_pos)
+                self.arr.append([b_x_pos, b_y_pos])
+                if self.par_click == 2:
+                    coord = (b_x_pos, b_y_pos)
+                    coord_px = (b_x_pos * BOARD_S + 10, b_y_pos * BOARD_S + 10)
+                    warrior = None
+                    if self.select == 11:
+                        warrior = WarriorBlue(coord_px, screen)
+                        self.board[b_x_pos][b_y_pos] = 12
+                    elif self.select == 21:
+                        warrior = WarriorRed(coord_px, screen)
+                        self.board[b_x_pos][b_y_pos] = 22
+
+                    map_units[coord] = warrior
+                    warrior.render()
+                    warrior.all_sprites.draw(screen)
+
+                    self.select = None
+                    self.par_click = 0
+                # self.board[b_x_pos][b_y_pos] = 1
+        elif self.par_click == 10:
+            if warrior_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+                self.par_click = 2
+                self.select = 11
+                print("WARRIOR BLUE SELECTED")
+            elif warrior_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
+                self.par_click = 2
+                self.select = 21
+                print("WARRIOR RED SELECTED")
 
     def on_click(self):
         if self.b_x_y is not None:
@@ -284,6 +329,8 @@ class Board:
                 except KeyError:
                     print("Try other")
 
-    def get_click(self, mouse_pos, turn):
-        self.get_cell(mouse_pos, turn)
-        self.on_click()
+    def get_click(self, mouse_pos):
+        self.get_cell(mouse_pos)
+        if self.par_click == 2:
+            self.on_click()
+
