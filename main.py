@@ -9,14 +9,13 @@ running = True
 par_space = 0
 FPS = 20
 par = 0
-turn = "1"
+turn = 1
 clock = pygame.time.Clock()
 
 
 while running:
     if par == 0:
         board.render()
-    turn_file = open("turn.txt", "r")
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -24,10 +23,9 @@ while running:
             new_board_pos = ((event.pos[0] - 10) // 30, (event.pos[1] - 10) // 30)
             if event.button == 1:
                 board.get_click(event.pos, turn)
-                print(turn_file.read())
-                if turn_file.read() != turn:
+                if board.turn != turn:
                     print(turn)
-                    turn = turn_file.read()
+                    turn = board.turn
                     par = 1
             elif event.button == 3:
                 try:
