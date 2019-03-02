@@ -236,7 +236,7 @@ class Board:
             sprite.image = load_image("end_game.png")
             sprite.rect = sprite.image.get_rect()
             all_sprites.add(sprite)
-            sprite.rect.x = 742
+            sprite.rect.x = 733
             sprite.rect.y = 450
             all_sprites.draw(screen)
 
