@@ -32,6 +32,7 @@ class Board:
                       11: (107, 24, 255), 22: (255, 93, 25),
                       12: (0, 150, 50), "frame": (40, 154, 65)}
         self.xod = -1
+        self.turn = 1
         self.width_board = width
         self.height_board = height
         self.width = width * BOARD_S + 10
@@ -248,12 +249,10 @@ class Board:
                 (y_pos <= 5 or y_pos >= self.height - 5):
             if sprite.rect.collidepoint((x_pos, y_pos)):
                 print("END TURN")
-                file_turn = open("turn.txt", "a")
-                if file_turn.read() == "1":
-                    file_turn.write("2")
-                elif file_turn.read() == "2":
-                    file_turn.write("1")
-                file_turn.close()
+                if self.turn == 1:
+                    self.turn = 2
+                elif self.turn == 2:
+                    self.turn = 1
             else:
                 print("miss", x_pos, y_pos, sep="-------")
                 self.b_x_y = None
