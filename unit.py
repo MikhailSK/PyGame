@@ -32,7 +32,7 @@ def load_image(name, color_key=None):
 class MainUnit:
     def __init__(self, screen):
         self.name = ""
-        self.atk = 0
+        self.damage = 0
         self.move = 0
         self.coord = [1, 1]
         self.x, self.y = self.coord[0] * BOARD_S + 10, self.coord[1] * BOARD_S + 10
@@ -58,9 +58,58 @@ class MainUnit:
 
     def dead(self):
         print(self.x, self.y)
-        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
+        pygame.draw.rect(self.screen, (150, 190, 16),
+                         (self.x, self.y, 30, 30))
         pygame.display.flip()
         print("DEAD")
+
+    def get_info(self):
+        print("INFO GET")
+        pygame.draw.rect(screen, (238, 160, 74),
+                         (724, 25, 200, 230))
+        font = pygame.font.Font(None, 28)
+
+        text = font.render("Name: " + str(self.name),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 40
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Max Health: " + str(self.max_health),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 70
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Health: " + str(self.health),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 100
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Damage: " + str(self.damage),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 130
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Range: " + str(self.atk_range),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 160
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Move: " + str(self.move),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 190
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Coords: " + str(self.coord),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 220
+        screen.blit(text, (text_x, text_y))
 
 
 class WallMg(pygame.sprite.Sprite):

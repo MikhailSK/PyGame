@@ -1,4 +1,4 @@
-from Board import Board
+from Board import *
 from unit import *
 
 
@@ -8,18 +8,31 @@ screen.fill((0, 0, 0))
 running = True
 par_space = 0
 FPS = 20
-par = -1
+par = 0
+turn = "1"
 clock = pygame.time.Clock()
 
 
 while running:
-    if par == -1:
+    if par == 0:
         board.render()
+    turn_file = open("turn.txt", "r")
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.MOUSEBUTTONUP:
-            board.get_click(event.pos)
-            par *= -1
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            new_board_pos = ((event.pos[0] - 10) // 30, (event.pos[1] - 10) // 30)
+            if event.button == 1:
+                board.get_click(event.pos, turn)
+                print(turn_file.read())
+                if turn_file.read() != turn:
+                    print(turn)
+                    turn = turn_file.read()
+                    par = 1
+            elif event.button == 3:
+                try:
+                    map_units[new_board_pos].get_info()
+                except KeyError:
+                    print("empty cell")
     pygame.display.flip()
     clock.tick(FPS)

@@ -7,6 +7,20 @@ arr_wall = [[11, 16], [11, 0], [11, 4], [11, 12], [7, 10],
             [19, 14], [3, 14], [3, 2], [11, 8]]
 arr_castle = [[0, 8], [22, 8]]
 map_units = {}
+sprite = pygame.sprite.Sprite()
+
+
+# class EndButtonMg(pygame.sprite.Sprite):
+#     def __init__(self, group):
+#         super().__init__(group)
+#         self.all_sprites = pygame.sprite.Group()
+#         self.image = load_image("end_game")
+#         self.rect = self.image.get_rect()
+#
+#     def render(self):
+#         m_castle = EndButtonMg(self.all_sprites)
+#         m_castle.rect.x = 600
+#         m_castle.rect.y = 600
 
 
 class Board:
@@ -218,14 +232,31 @@ class Board:
                              (5, 520, 700, 5))
             pygame.display.flip()
 
+            all_sprites = pygame.sprite.Group()
+            sprite.image = load_image("end_game.png")
+            sprite.rect = sprite.image.get_rect()
+            all_sprites.add(sprite)
+            sprite.rect.x = 742
+            sprite.rect.y = 450
+            all_sprites.draw(screen)
+
             self.is_map_rendered = 1
 
-    def get_cell(self, mouse_position):
+    def get_cell(self, mouse_position, turn):
         x_pos, y_pos = mouse_position
         if (x_pos <= 5 or x_pos >= self.width - 5) or \
                 (y_pos <= 5 or y_pos >= self.height - 5):
-            print("miss", x_pos, y_pos, sep="-------")
-            self.b_x_y = None
+            if sprite.rect.collidepoint((x_pos, y_pos)):
+                print("END TURN")
+                file_turn = open("turn.txt", "a")
+                if file_turn.read() == "1":
+                    file_turn.write("2")
+                elif file_turn.read() == "2":
+                    file_turn.write("1")
+                file_turn.close()
+            else:
+                print("miss", x_pos, y_pos, sep="-------")
+                self.b_x_y = None
         else:
             b_x_pos = (x_pos - 10) // 30
             b_y_pos = (y_pos - 10) // 30
@@ -254,6 +285,6 @@ class Board:
                 except KeyError:
                     print("Try other")
 
-    def get_click(self, mouse_pos):
-        self.get_cell(mouse_pos)
+    def get_click(self, mouse_pos, turn):
+        self.get_cell(mouse_pos, turn)
         self.on_click()
