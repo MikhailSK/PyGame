@@ -31,7 +31,7 @@ while running:
                     print(turn)
                     turn = board.turn
                     par = 1
-                    board.render()
+                board.render()
             elif event.button == 3:
                 try:
                     map_units[new_board_pos].get_info()

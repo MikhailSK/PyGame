@@ -10,7 +10,13 @@ arr_castle = [[0, 8], [22, 8]]
 all_sprites = pygame.sprite.Group()
 warrior_select_r = WarriorUnitSelectR(all_sprites)
 warrior_select_b = WarriorUnitSelectB(all_sprites)
+archer_select_r = ArcherUnitSelectR(all_sprites)
+archer_select_b = ArcherUnitSelectB(all_sprites)
+priest_select_r = PriestUnitSelectR(all_sprites)
+priest_select_b = PriestUnitSelectB(all_sprites)
 create_unit = CreateUnit(all_sprites)
+move_unit = MoveUnit(all_sprites)
+damage_unit = DamageUnit(all_sprites)
 
 
 class Board:
@@ -37,6 +43,10 @@ class Board:
         self.is_map_rendered = 0
         self.arr = []
         self.par_click = 0
+        self.res_r = 2
+        self.res_r_add = 1
+        self.res_b = 2
+        self.res_b_add = 1
         self.select = None
 
     # настройка внешнего вида
@@ -57,134 +67,156 @@ class Board:
                 if x_pos == 0:
                     if y_pos == 0:
                         if self.board[x_pos + 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(12, 13):
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos + 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(22, 23):
+                                in range(22, 26):
                             m_par = 22
                     elif y_pos == BOARD_H - 1:
                         if self.board[x_pos + 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(12, 13):
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos + 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(22, 23):
+                                in range(22, 26):
                             m_par = 22
                     else:
                         if self.board[x_pos + 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(12, 13):
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos + 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(22, 23):
+                                in range(22, 26):
                             m_par = 22
                 elif x_pos == BOARD_W - 1:
                     if y_pos == 0:
                         if self.board[x_pos - 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(12, 13):
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos - 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(22, 23):
+                                in range(22, 26):
                             m_par = 22
                     elif y_pos == BOARD_H - 1:
                         if self.board[x_pos - 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(12, 13):
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos - 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(22, 23):
+                                in range(22, 26):
                             m_par = 22
                     else:
                         if self.board[x_pos - 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(12, 13):
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos - 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(22, 23):
+                                in range(22, 26):
                             m_par = 22
                 else:
                     if y_pos == BOARD_H - 1:
                         if self.board[x_pos - 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos + 1][y_pos] \
-                                in range(12, 13):
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos - 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos - 1] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos + 1][y_pos] \
-                                in range(22, 23):
+                                in range(22, 26):
                             m_par = 22
                     elif y_pos == 0:
                         if self.board[x_pos - 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos + 1][y_pos] \
-                                in range(12, 13):
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos - 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos + 1][y_pos] \
-                                in range(22, 23):
+                                in range(22, 26):
                             m_par = 22
                     else:
                         if self.board[x_pos - 1][y_pos] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(12, 13) \
+                                in range(12, 16) \
                                 or self.board[x_pos + 1][y_pos] \
-                                in range(12, 13) \
-                                or self.board[x_pos][y_pos + 1] \
-                                in range(12, 13):
+                                in range(12, 16) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(12, 16):
                             m_par = 11
                         elif self.board[x_pos - 1][y_pos] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos][y_pos + 1] \
-                                in range(22, 23) \
+                                in range(22, 26) \
                                 or self.board[x_pos + 1][y_pos] \
-                                in range(22, 23) \
-                                or self.board[x_pos][y_pos + 1] \
-                                in range(22, 23):
+                                in range(22, 26) \
+                                or self.board[x_pos][y_pos - 1] \
+                                in range(22, 26):
                             m_par = 22
-                if m_par != 0:
+                if m_par != 0 and self.board[x_pos][y_pos] != 1:
                     pygame.draw.rect(self.screen, self.color[m_par],
                                      (x, y, 30, 30), 1)
+                    if self.board[x_pos][y_pos] not in range(12, 16)\
+                            and self.board[x_pos][y_pos]\
+                            not in range(22, 26):
+                        if m_par == 11:
+                            self.board[x_pos][y_pos] = -11
+                        elif m_par == 22:
+                            self.board[x_pos][y_pos] = -21
                 y_pos += 1
             x_pos += 1
+
+        pygame.draw.rect(screen, (238, 160, 74),
+                         (724, 452, 200, 60))
+
+        font = pygame.font.Font(None, 28)
+
+        if self.turn == 1:
+            text = font.render("RES-B: " + str(self.res_b) + "(+" + str(self.res_b_add) + ")",
+                               1, (78, 22, 10))
+        else:
+            text = font.render("RES-R: " + str(self.res_r) + "(+" + str(self.res_r_add) + ")",
+                               1, (78, 22, 10))
+        text_x = 765
+        text_y = 475
+        screen.blit(text, (text_x, text_y))
 
         if self.is_map_rendered == 0:
             for i in arr_wall:
@@ -230,7 +262,7 @@ class Board:
             sprite.rect = sprite.image.get_rect()
             all_sprites.add(sprite)
             sprite.rect.x = 733
-            sprite.rect.y = 450
+            sprite.rect.y = 300
             all_sprites.draw(screen)
 
             self.is_map_rendered = 1
@@ -246,28 +278,30 @@ class Board:
                             print("END TURN")
                             if self.turn == 1:
                                 self.turn = 2
+                                self.res_b += self.res_b_add
 
                                 pygame.draw.rect(screen, (125, 120, 74),
-                                                 (724, 525, 200, 70))
+                                                 (724, 380, 200, 70))
 
                                 font = pygame.font.Font(None, 40)
                                 text = font.render("RED",
                                                    1, (218, 22, 10))
                                 text_x = 795
-                                text_y = 550
+                                text_y = 403
                                 screen.blit(text, (text_x, text_y))
 
                             elif self.turn == 2:
                                 self.turn = 1
+                                self.res_r += self.res_r_add
 
                                 pygame.draw.rect(screen, (125, 120, 74),
-                                                 (790, 525, 70, 70))
+                                                 (790, 380, 70, 70))
 
                                 font = pygame.font.Font(None, 40)
                                 text = font.render("BLUE",
                                                    1, (28, 22, 210))
                                 text_x = 788
-                                text_y = 550
+                                text_y = 403
                                 screen.blit(text, (text_x, text_y))
                         elif create_unit.rect.collidepoint((x_pos, y_pos)):
                             print("CREATE NEW")
@@ -275,7 +309,8 @@ class Board:
                         else:
                             print("miss", x_pos, y_pos, sep="-------")
                         self.b_x_y = None
-            elif (self.select is not None and self.par_click == 2) or self.par_click == 0 or self.par_click == 2:
+            elif (self.select is not None and self.par_click == 2)\
+                    or self.par_click == 0 or self.par_click == 2:
                 b_x_pos = (x_pos - 10) // 30
                 b_y_pos = (y_pos - 10) // 30
                 print(b_x_pos, b_y_pos)
@@ -283,20 +318,77 @@ class Board:
                 self.b_x_y.append(b_x_pos)
                 self.b_x_y.append(b_y_pos)
                 self.arr.append([b_x_pos, b_y_pos])
+                coord = (b_x_pos, b_y_pos)
+                coord_px = (b_x_pos * BOARD_S + 10, b_y_pos * BOARD_S + 10)
                 if self.par_click == 2:
-                    coord = (b_x_pos, b_y_pos)
-                    coord_px = (b_x_pos * BOARD_S + 10, b_y_pos * BOARD_S + 10)
                     warrior = None
-                    if self.select == 11:
-                        warrior = WarriorBlue(coord_px, screen)
-                        self.board[b_x_pos][b_y_pos] = 12
-                    elif self.select == 21:
-                        warrior = WarriorRed(coord_px, screen)
-                        self.board[b_x_pos][b_y_pos] = 22
+                    archer = None
+                    priest = None
+                    if self.board[b_x_pos][b_y_pos] == -11 or self.board[b_x_pos][b_y_pos] == -21:
+                        need_render = 0
+                        if self.select in range(11, 16) and self.board[b_x_pos][b_y_pos] == -11:
+                            if self.select == 11:
+                                warrior = WarriorBlue(coord_px, screen)
+                                if (self.res_b - warrior.cell) >= 0:
+                                    self.board[b_x_pos][b_y_pos] = 13
+                                    self.res_b -= warrior.cell
+                                    need_render = 1
+                                else:
+                                    print("NO RES BLUE")
+                            elif self.select == 12:
+                                archer = ArcherBlue(coord_px, screen)
+                                if (self.res_b - archer.cell) >= 0:
+                                    self.board[b_x_pos][b_y_pos] = 13
+                                    self.res_b -= archer.cell
+                                    need_render = 2
+                                else:
+                                    print("NO RES BLUE")
+                            elif self.select == 13:
+                                priest = PriestBlue(coord_px, screen)
+                                if (self.res_b - priest.cell) >= 0:
+                                    self.board[b_x_pos][b_y_pos] = 13
+                                    self.res_b -= priest.cell
+                                    need_render = 3
+                                else:
+                                    print("NO RES BLUE")
+                        elif self.select in range(21, 26) and self.board[b_x_pos][b_y_pos] == -21:
+                            if self.select == 21:
+                                warrior = WarriorRed(coord_px, screen)
+                                if (self.res_r - warrior.cell) >= 0:
+                                    self.board[b_x_pos][b_y_pos] = 23
+                                    self.res_r -= warrior.cell
+                                    need_render = 1
+                                else:
+                                    print("NO RES RED")
+                            elif self.select == 22:
+                                archer = ArcherRed(coord_px, screen)
+                                if (self.res_b - archer.cell) >= 0:
+                                    self.board[b_x_pos][b_y_pos] = 13
+                                    self.res_b -= archer.cell
+                                    need_render = 2
+                                else:
+                                    print("NO RES BLUE")
+                            elif self.select == 23:
+                                priest = PriestRed(coord_px, screen)
+                                if (self.res_b - priest.cell) >= 0:
+                                    self.board[b_x_pos][b_y_pos] = 13
+                                    self.res_b -= priest.cell
+                                    need_render = 3
+                                else:
+                                    print("NO RES BLUE")
 
-                    map_units[coord] = warrior
-                    warrior.render()
-                    warrior.all_sprites.draw(screen)
+                        if need_render == 1:
+                            map_units[coord] = warrior
+                            warrior.render()
+                            warrior.all_sprites.draw(screen)
+                        elif need_render == 2:
+                            map_units[coord] = archer
+                            archer.render()
+                            archer.all_sprites.draw(screen)
+                        elif need_render == 3:
+                            map_units[coord] = priest
+                            priest.render()
+                            priest.all_sprites.draw(screen)
 
                     self.select = None
                     self.par_click = 0
@@ -310,6 +402,22 @@ class Board:
                 self.par_click = 2
                 self.select = 21
                 print("WARRIOR RED SELECTED")
+            elif archer_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+                self.par_click = 2
+                self.select = 12
+                print("ARCHER BLUE SELECTED")
+            elif archer_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
+                self.par_click = 2
+                self.select = 22
+                print("ARCHER RED SELECTED")
+            elif priest_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+                self.par_click = 2
+                self.select = 13
+                print("PRIEST BLUE SELECTED")
+            elif priest_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
+                self.par_click = 2
+                self.select = 23
+                print("PRIEST RED SELECTED")
 
     def on_click(self):
         if self.b_x_y is not None:

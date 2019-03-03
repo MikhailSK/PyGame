@@ -42,6 +42,28 @@ class CreateUnit(pygame.sprite.Sprite):
         self.rect.y = 538
 
 
+class MoveUnit(pygame.sprite.Sprite):
+    image = load_image("move_unit.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = MoveUnit.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 300
+        self.rect.y = 538
+
+
+class DamageUnit(pygame.sprite.Sprite):
+    image = load_image("damage_unit.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = DamageUnit.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 390
+        self.rect.y = 538
+
+
 class WarriorUnitSelectB(pygame.sprite.Sprite):
     image = load_image("warrior_b.png")
 
@@ -50,7 +72,7 @@ class WarriorUnitSelectB(pygame.sprite.Sprite):
         self.image = WarriorUnitSelectB.image
         self.rect = self.image.get_rect()
         self.rect.x = 90
-        self.rect.y = 538
+        self.rect.y = 541
 
 
 class WarriorUnitSelectR(pygame.sprite.Sprite):
@@ -61,7 +83,51 @@ class WarriorUnitSelectR(pygame.sprite.Sprite):
         self.image = WarriorUnitSelectR.image
         self.rect = self.image.get_rect()
         self.rect.x = 124
-        self.rect.y = 538
+        self.rect.y = 541
+
+
+class ArcherUnitSelectB(pygame.sprite.Sprite):
+    image = load_image("archer_b.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = ArcherUnitSelectB.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 90
+        self.rect.y = 576
+
+
+class ArcherUnitSelectR(pygame.sprite.Sprite):
+    image = load_image("archer_r.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = ArcherUnitSelectR.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 124
+        self.rect.y = 576
+
+
+class PriestUnitSelectB(pygame.sprite.Sprite):
+    image = load_image("priest_b.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = PriestUnitSelectB.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 158
+        self.rect.y = 541
+
+
+class PriestUnitSelectR(pygame.sprite.Sprite):
+    image = load_image("priest_r.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = PriestUnitSelectR.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 193
+        self.rect.y = 541
 
 
 class MainUnit:
@@ -76,6 +142,7 @@ class MainUnit:
         self.health = 1
         self.max_health = 1
         self.screen = screen
+        self.cell = 0
 
     def move(self, coord):
         pass
@@ -92,16 +159,15 @@ class MainUnit:
         pass
 
     def dead(self):
-        print(self.x, self.y)
-        pygame.draw.rect(self.screen, (150, 190, 16),
-                         (self.x, self.y, 30, 30))
+        self.x, self.y = self.coord[0], self.coord[1]
+        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
         pygame.display.flip()
-        print("DEAD")
+        print("DEAD" + self.name)
 
     def get_info(self):
         print("INFO GET")
         pygame.draw.rect(screen, (238, 160, 74),
-                         (724, 25, 200, 230))
+                         (724, 25, 200, 255))
         font = pygame.font.Font(None, 28)
 
         text = font.render("Name: " + str(self.name),
@@ -140,10 +206,17 @@ class MainUnit:
         text_y = 190
         screen.blit(text, (text_x, text_y))
 
-        text = font.render("Coords: " + str(self.coord),
+        text = font.render("Cell: " + str(self.cell),
                            1, (78, 22, 10))
         text_x = 745
         text_y = 220
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Coords: " + str(self.coord),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 250
+
         screen.blit(text, (text_x, text_y))
 
 
@@ -250,6 +323,7 @@ class WarriorRed(MainUnit):
         self.coord = coord
         self.damage = 1
         self.move = 1
+        self.cell = 2
         self.atk_range = 1
         #
         self.health = 5
@@ -258,15 +332,9 @@ class WarriorRed(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
-        m_castle = CastleMgRed(self.all_sprites, self)
-        m_castle.rect.x = self.coord[0] + 1
-        m_castle.rect.y = self.coord[1] + 1
-
-    def dead(self):
-        self.x, self.y = self.coord[0], self.coord[1]
-        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
-        pygame.display.flip()
-        print("DEAD" + self.name)
+        warrior_r = CastleMgRed(self.all_sprites, self)
+        warrior_r.rect.x = self.coord[0] + 1
+        warrior_r.rect.y = self.coord[1] + 1
 
 
 class WarriorMgRed(pygame.sprite.Sprite):
@@ -284,6 +352,7 @@ class WarriorBlue(MainUnit):
         self.coord = coord
         self.damage = 1
         self.move = 1
+        self.cell = 2
         self.atk_range = 1
         #
         self.health = 5
@@ -292,12 +361,122 @@ class WarriorBlue(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
-        m_castle = CastleMgRed(self.all_sprites, self)
-        m_castle.rect.x = self.coord[0] + 1
-        m_castle.rect.y = self.coord[1] + 1
+        warrior_b = CastleMgRed(self.all_sprites, self)
+        warrior_b.rect.x = self.coord[0] + 1
+        warrior_b.rect.y = self.coord[1] + 1
 
-    def dead(self):
-        self.x, self.y = self.coord[0], self.coord[1]
-        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
-        pygame.display.flip()
-        print("DEAD" + self.name)
+
+class ArcherMgBlue(pygame.sprite.Sprite):
+    def __init__(self, group, parent):
+        super().__init__(group)
+        self.image = parent.image
+        self.rect = self.image.get_rect()
+
+
+class ArcherBlue(MainUnit):
+    def __init__(self, coord, screen):
+        super().__init__(screen)
+        self.all_sprites = pygame.sprite.Group()
+        self.name = "archer_b"
+        self.coord = coord
+        self.damage = 1
+        self.move = 1
+        self.cell = 3
+        self.atk_range = 2
+        #
+        self.health = 4
+        #
+        self.max_health = 4
+        self.image = load_image(self.name + ".png")
+
+    def render(self, **kwargs):
+        archer_b = ArcherMgBlue(self.all_sprites, self)
+        archer_b.rect.x = self.coord[0] + 1
+        archer_b.rect.y = self.coord[1] + 1
+
+
+class ArcherMgRed(pygame.sprite.Sprite):
+    def __init__(self, group, parent):
+        super().__init__(group)
+        self.image = parent.image
+        self.rect = self.image.get_rect()
+
+
+class ArcherRed(MainUnit):
+    def __init__(self, coord, screen):
+        super().__init__(screen)
+        self.all_sprites = pygame.sprite.Group()
+        self.name = "archer_r"
+        self.coord = coord
+        self.damage = 1
+        self.move = 1
+        self.cell = 3
+        self.atk_range = 2
+        #
+        self.health = 4
+        #
+        self.max_health = 4
+        self.image = load_image(self.name + ".png")
+
+    def render(self, **kwargs):
+        archer_r = ArcherMgRed(self.all_sprites, self)
+        archer_r.rect.x = self.coord[0] + 1
+        archer_r.rect.y = self.coord[1] + 1
+
+
+class PriestMgBlue(pygame.sprite.Sprite):
+    def __init__(self, group, parent):
+        super().__init__(group)
+        self.image = parent.image
+        self.rect = self.image.get_rect()
+
+
+class PriestBlue(MainUnit):
+    def __init__(self, coord, screen):
+        super().__init__(screen)
+        self.all_sprites = pygame.sprite.Group()
+        self.name = "priest_b"
+        self.coord = coord
+        self.damage = -1
+        self.move = 1
+        self.cell = 5
+        self.atk_range = 2
+        #
+        self.health = 4
+        #
+        self.max_health = 4
+        self.image = load_image(self.name + ".png")
+
+    def render(self, **kwargs):
+        priest_b = PriestMgBlue(self.all_sprites, self)
+        priest_b.rect.x = self.coord[0] + 1
+        priest_b.rect.y = self.coord[1] + 1
+
+
+class PriestMgRed(pygame.sprite.Sprite):
+    def __init__(self, group, parent):
+        super().__init__(group)
+        self.image = parent.image
+        self.rect = self.image.get_rect()
+
+
+class PriestRed(MainUnit):
+    def __init__(self, coord, screen):
+        super().__init__(screen)
+        self.all_sprites = pygame.sprite.Group()
+        self.name = "priest_r"
+        self.coord = coord
+        self.damage = -1
+        self.move = 1
+        self.cell = 5
+        self.atk_range = 2
+        #
+        self.health = 4
+        #
+        self.max_health = 4
+        self.image = load_image(self.name + ".png")
+
+    def render(self, **kwargs):
+        priest_r = PriestMgRed(self.all_sprites, self)
+        priest_r.rect.x = self.coord[0] + 1
+        priest_r.rect.y = self.coord[1] + 1
