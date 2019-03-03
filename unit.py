@@ -130,6 +130,28 @@ class PriestUnitSelectR(pygame.sprite.Sprite):
         self.rect.y = 541
 
 
+class MinerUnitSelectB(pygame.sprite.Sprite):
+    image = load_image("miner_b.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = MinerUnitSelectB.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 158
+        self.rect.y = 576
+
+
+class MinerUnitSelectR(pygame.sprite.Sprite):
+    image = load_image("miner_r.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = MinerUnitSelectR.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 193
+        self.rect.y = 576
+
+
 class MainUnit:
     def __init__(self, screen):
         self.name = ""
@@ -144,6 +166,7 @@ class MainUnit:
         self.screen = screen
         self.cell = 0
         self.moved = 0
+        self.attacked = 0
 
     def move(self):
         pass
@@ -317,7 +340,7 @@ class WarriorMgRed(pygame.sprite.Sprite):
 
 
 class WarriorRed(MainUnit):
-    def __init__(self, coord, screen, health=5, moved=0):
+    def __init__(self, coord, screen, health=5, moved=0, attacked=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "warrior_r"
@@ -326,6 +349,7 @@ class WarriorRed(MainUnit):
         self.move = 1
         self.moved = moved
         self.cell = 2
+        self.attacked = attacked
         self.atk_range = 1
         #
         self.health = health
@@ -347,7 +371,7 @@ class WarriorMgRed(pygame.sprite.Sprite):
 
 
 class WarriorBlue(MainUnit):
-    def __init__(self, coord, screen, health=5, moved=0):
+    def __init__(self, coord, screen, health=5, moved=0, attacked=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "warrior_b"
@@ -356,6 +380,7 @@ class WarriorBlue(MainUnit):
         self.move = 1
         self.moved = moved
         self.cell = 2
+        self.attacked = attacked
         self.atk_range = 1
         #
         self.health = health
@@ -377,7 +402,7 @@ class ArcherMgBlue(pygame.sprite.Sprite):
 
 
 class ArcherBlue(MainUnit):
-    def __init__(self, coord, screen, health=4, moved=0):
+    def __init__(self, coord, screen, health=4, moved=0, attacked=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_b"
@@ -386,6 +411,7 @@ class ArcherBlue(MainUnit):
         self.move = 2
         self.moved = moved
         self.cell = 3
+        self.attacked = attacked
         self.atk_range = 2
         #
         self.health = health
@@ -407,15 +433,16 @@ class ArcherMgRed(pygame.sprite.Sprite):
 
 
 class ArcherRed(MainUnit):
-    def __init__(self, coord, screen, health=4, moved=0):
+    def __init__(self, coord, screen, health=4, moved=0, attacked=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_r"
         self.coord = coord
         self.damage = 1
         self.move = 2
-        self.moved = 0
+        self.moved = moved
         self.cell = 3
+        self.attacked = attacked
         self.atk_range = 2
         #
         self.health = health
@@ -437,7 +464,7 @@ class PriestMgBlue(pygame.sprite.Sprite):
 
 
 class PriestBlue(MainUnit):
-    def __init__(self, coord, screen, health=4, moved=0):
+    def __init__(self, coord, screen, health=4, moved=0, attacked=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "priest_b"
@@ -446,6 +473,7 @@ class PriestBlue(MainUnit):
         self.move = 1
         self.moved = moved
         self.cell = 5
+        self.attacked = attacked
         self.atk_range = 2
         #
         self.health = health
@@ -467,7 +495,7 @@ class PriestMgRed(pygame.sprite.Sprite):
 
 
 class PriestRed(MainUnit):
-    def __init__(self, coord, screen, health=4, moved=0):
+    def __init__(self, coord, screen, health=4, moved=0, attacked=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "priest_r"
@@ -476,6 +504,7 @@ class PriestRed(MainUnit):
         self.move = 1
         self.moved = moved
         self.cell = 5
+        self.attacked = attacked
         self.atk_range = 2
         #
         self.health = health
@@ -487,3 +516,65 @@ class PriestRed(MainUnit):
         priest_r = PriestMgRed(self.all_sprites, self)
         priest_r.rect.x = self.coord[0] + 1
         priest_r.rect.y = self.coord[1] + 1
+
+
+class MinerMgRed(pygame.sprite.Sprite):
+    def __init__(self, group, parent):
+        super().__init__(group)
+        self.image = parent.image
+        self.rect = self.image.get_rect()
+
+
+class MinerRed(MainUnit):
+    def __init__(self, coord, screen, health=8, moved=0, attacked=0):
+        super().__init__(screen)
+        self.all_sprites = pygame.sprite.Group()
+        self.name = "miner_r"
+        self.coord = coord
+        self.damage = 0
+        self.move = 0
+        self.moved = moved
+        self.cell = 7
+        self.atk_range = 0
+        self.attacked = attacked
+        #
+        self.health = health
+        #
+        self.max_health = 8
+        self.image = load_image(self.name + ".png")
+
+    def render(self, **kwargs):
+        miner_r = MinerMgRed(self.all_sprites, self)
+        miner_r.rect.x = self.coord[0] + 1
+        miner_r.rect.y = self.coord[1] + 1
+
+
+class MinerMgBlue(pygame.sprite.Sprite):
+    def __init__(self, group, parent):
+        super().__init__(group)
+        self.image = parent.image
+        self.rect = self.image.get_rect()
+
+
+class MinerBlue(MainUnit):
+    def __init__(self, coord, screen, health=8, moved=0, attacked=0):
+        super().__init__(screen)
+        self.all_sprites = pygame.sprite.Group()
+        self.name = "miner_r"
+        self.coord = coord
+        self.damage = 0
+        self.move = 0
+        self.moved = moved
+        self.cell = 7
+        self.attacked = attacked
+        self.atk_range = 0
+        #
+        self.health = health
+        #
+        self.max_health = 8
+        self.image = load_image(self.name + ".png")
+
+    def render(self, **kwargs):
+        miner_r = MinerMgRed(self.all_sprites, self)
+        miner_r.rect.x = self.coord[0] + 1
+        miner_r.rect.y = self.coord[1] + 1

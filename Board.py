@@ -14,6 +14,8 @@ archer_select_r = ArcherUnitSelectR(all_sprites)
 archer_select_b = ArcherUnitSelectB(all_sprites)
 priest_select_r = PriestUnitSelectR(all_sprites)
 priest_select_b = PriestUnitSelectB(all_sprites)
+miner_select_r = MinerUnitSelectR(all_sprites)
+miner_select_b = MinerUnitSelectB(all_sprites)
 create_unit = CreateUnit(all_sprites)
 move_unit = MoveUnit(all_sprites)
 damage_unit = DamageUnit(all_sprites)
@@ -317,7 +319,8 @@ class Board:
         x_pos, y_pos = mouse_position
         if self.par_click == 0 or self.par_click == 2\
                 or self.par_click == 11 or self.par_click == 12\
-                or self.par_click == 110 or self.par_click == 120:
+                or self.par_click == 110 or self.par_click == 121 \
+                or self.par_click == 122:
             if ((x_pos <= 5 or x_pos >= self.width - 5)
                 or (y_pos <= 5 or y_pos >= self.height - 5))\
                     and self.select is None:
@@ -370,7 +373,8 @@ class Board:
             elif (self.select is not None and self.par_click == 2)\
                     or self.par_click == 0 or self.par_click == 2\
                     or self.par_click == 11 or self.par_click == 12\
-                    or self.par_click == 110 or self.par_click == 120:
+                    or self.par_click == 110 or self.par_click == 121 \
+                    or self.par_click == 122:
                 b_x_pos = (x_pos - 10) // 30
                 b_y_pos = (y_pos - 10) // 30
                 print(b_x_pos, b_y_pos)
@@ -384,6 +388,7 @@ class Board:
                     warrior = None
                     archer = None
                     priest = None
+                    miner = None
                     if self.board[b_x_pos][b_y_pos] == -11 or self.board[b_x_pos][b_y_pos] == -21\
                             or self.board[b_x_pos][b_y_pos] == -31:
                         need_render = 0
@@ -413,6 +418,15 @@ class Board:
                                     need_render = 3
                                 else:
                                     print("NO RES BLUE")
+                            elif self.select == 14 and b_x_pos < 11:
+                                miner = MinerBlue(coord_px, screen)
+                                if (self.res_b - miner.cell) >= 0:
+                                    self.board[b_x_pos][b_y_pos] = 14
+                                    self.res_b -= miner.cell
+                                    need_render = 4
+                                    self.res_b_add += 2
+                                else:
+                                    print("NO RES RED")
                         elif self.select in range(21, 26) and (self.board[b_x_pos][b_y_pos] == -21
                                                                or self.board[b_x_pos][b_y_pos] == -31):
                             if self.select == 21 and b_x_pos > 11:
@@ -439,6 +453,15 @@ class Board:
                                     need_render = 3
                                 else:
                                     print("NO RES RED")
+                            elif self.select == 24 and b_x_pos > 11:
+                                miner = MinerRed(coord_px, screen)
+                                if (self.res_r - miner.cell) >= 0:
+                                    self.board[b_x_pos][b_y_pos] = 24
+                                    self.res_r -= miner.cell
+                                    need_render = 4
+                                    self.res_r_add += 2
+                                else:
+                                    print("NO RES RED")
 
                         if need_render == 1:
                             map_units[coord] = warrior
@@ -452,6 +475,10 @@ class Board:
                             map_units[coord] = priest
                             priest.render()
                             priest.all_sprites.draw(screen)
+                        elif need_render == 4:
+                            map_units[coord] = miner
+                            miner.render()
+                            miner.all_sprites.draw(screen)
 
                         self.select = None
                         self.par_click = 0
@@ -462,8 +489,14 @@ class Board:
                             self.par_click = 110
                             self.select_coord = coord
                         elif self.par_click == 12:
-                            self.par_click = 120
-                            self.select_coord = coord
+                            if map_units[coord].name[-1] == "b" and self.turn == 1:
+                                print("BLUE START ATACK")
+                                self.par_click = 121
+                            if map_units[coord].name[-1] == "r" and self.turn == 2:
+                                print("RED START ATACK")
+                                self.par_click = 122
+                            if self.par_click != 12:
+                                self.select_coord = coord
                     except KeyError:
                         print("TRY OTHER")
                 elif self.par_click == 110:
@@ -472,23 +505,29 @@ class Board:
                     if self.turn == 1:
                         if self.select_unit.name == "warrior_b":
                             if self.board[coord[0]][coord[1]] == -11 or self.board[coord[0]][coord[1]] == -31:
-                                unit = WarriorBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved)
+                                unit = WarriorBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                                                   self.select_unit.attacked)
                         if self.select_unit.name == "archer_b":
                             if self.board[coord[0]][coord[1]] == -11 or self.board[coord[0]][coord[1]] == -31:
-                                unit = ArcherBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved)
+                                unit = ArcherBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                                                  self.select_unit.attacked)
                         if self.select_unit.name == "priest_b":
                             if self.board[coord[0]][coord[1]] == -11 or self.board[coord[0]][coord[1]] == -31:
-                                unit = PriestBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved)
+                                unit = PriestBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                                                  self.select_unit.attacked)
                     else:
                         if self.select_unit.name == "warrior_r":
                             if self.board[coord[0]][coord[1]] == -21 or self.board[coord[0]][coord[1]] == -31:
-                                unit = WarriorRed(coord_px, screen, self.select_unit.health, self.select_unit.moved)
+                                unit = WarriorRed(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                                                  self.select_unit.attacked)
                         if self.select_unit.name == "archer_r":
                             if self.board[coord[0]][coord[1]] == -21 or self.board[coord[0]][coord[1]] == -31:
-                                unit = ArcherRed(coord_px, screen, self.select_unit.health, self.select_unit.moved)
+                                unit = ArcherRed(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                                                 self.select_unit.attacked)
                         if self.select_unit.name == "priest_r":
                             if self.board[coord[0]][coord[1]] == -21 or self.board[coord[0]][coord[1]] == -31:
-                                unit = PriestRed(coord_px, screen, self.select_unit.health, self.select_unit.moved)
+                                unit = PriestRed(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                                                 self.select_unit.attacked)
 
                     if unit is not None and unit.moved + 1 <= unit.move:
                         pygame.draw.rect(self.screen, (0, 0, 0),
@@ -506,6 +545,8 @@ class Board:
                         unit.moved += 1
                         self.par_click = 0
                         print(unit.moved)
+                elif self.par_click == 121 or self.par_click == 122:
+                    pass
 
         elif self.par_click == 10:
             if warrior_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
@@ -532,28 +573,19 @@ class Board:
                 self.par_click = 2
                 self.select = 23
                 print("PRIEST RED SELECTED")
-
-    def on_click(self):
-        if self.b_x_y is not None:
-            x_pos, y_pos = self.b_x_y[0], self.b_x_y[1]
-            if self.board[x_pos][y_pos] != 1 and self.par_click != 11 and self.par_click != 12:
-                pygame.draw.rect(self.screen,
-                                 self.color[self.board[x_pos][y_pos]],
-                                 (int(x_pos) *
-                                  BOARD_S + 10,
-                                  int(y_pos) *
-                                  BOARD_S + 10, 30, 30), 1)
-                # try:
-                #     print(map_units[(x_pos, y_pos)])
-                #     unit = map_units[(x_pos, y_pos)]
-                #     unit.get_damage(5)
-                #     print(unit.health)
-                # except KeyError:
-                #     print("Try other")
+            elif priest_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+                self.par_click = 2
+                self.select = 14
+                print("MINER BLUE SELECTED")
+            elif miner_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+                self.par_click = 2
+                self.select = 14
+                print("MINER BLUE SELECTED")
+            elif miner_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
+                self.par_click = 2
+                self.select = 24
+                print("MINER RED SELECTED")
 
     def get_click(self, mouse_pos):
         self.get_cell(mouse_pos)
         print(self.par_click)
-        if self.par_click == 2 or self.par_click == 11 or self.par_click == 12:
-            self.on_click()
-
