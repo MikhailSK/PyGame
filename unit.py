@@ -143,8 +143,9 @@ class MainUnit:
         self.max_health = 1
         self.screen = screen
         self.cell = 0
+        self.moved = 0
 
-    def move(self, coord):
+    def move(self):
         pass
 
     def get_damage(self, damage):
@@ -155,7 +156,7 @@ class MainUnit:
     def put_damage(self, coord):
         pass
 
-    def render(self, coord):
+    def render(self, coord, health):
         pass
 
     def dead(self):
@@ -316,17 +317,18 @@ class WarriorMgRed(pygame.sprite.Sprite):
 
 
 class WarriorRed(MainUnit):
-    def __init__(self, coord, screen):
+    def __init__(self, coord, screen, health=5, moved=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "warrior_r"
         self.coord = coord
         self.damage = 1
         self.move = 1
+        self.moved = moved
         self.cell = 2
         self.atk_range = 1
         #
-        self.health = 5
+        self.health = health
         #
         self.max_health = 5
         self.image = load_image(self.name + ".png")
@@ -345,17 +347,18 @@ class WarriorMgRed(pygame.sprite.Sprite):
 
 
 class WarriorBlue(MainUnit):
-    def __init__(self, coord, screen):
+    def __init__(self, coord, screen, health=5, moved=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "warrior_b"
         self.coord = coord
         self.damage = 1
         self.move = 1
+        self.moved = moved
         self.cell = 2
         self.atk_range = 1
         #
-        self.health = 5
+        self.health = health
         #
         self.max_health = 5
         self.image = load_image(self.name + ".png")
@@ -374,17 +377,18 @@ class ArcherMgBlue(pygame.sprite.Sprite):
 
 
 class ArcherBlue(MainUnit):
-    def __init__(self, coord, screen):
+    def __init__(self, coord, screen, health=4, moved=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_b"
         self.coord = coord
         self.damage = 1
-        self.move = 1
+        self.move = 2
+        self.moved = moved
         self.cell = 3
         self.atk_range = 2
         #
-        self.health = 4
+        self.health = health
         #
         self.max_health = 4
         self.image = load_image(self.name + ".png")
@@ -403,17 +407,18 @@ class ArcherMgRed(pygame.sprite.Sprite):
 
 
 class ArcherRed(MainUnit):
-    def __init__(self, coord, screen):
+    def __init__(self, coord, screen, health=4, moved=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_r"
         self.coord = coord
         self.damage = 1
-        self.move = 1
+        self.move = 2
+        self.moved = 0
         self.cell = 3
         self.atk_range = 2
         #
-        self.health = 4
+        self.health = health
         #
         self.max_health = 4
         self.image = load_image(self.name + ".png")
@@ -432,17 +437,18 @@ class PriestMgBlue(pygame.sprite.Sprite):
 
 
 class PriestBlue(MainUnit):
-    def __init__(self, coord, screen):
+    def __init__(self, coord, screen, health=4, moved=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "priest_b"
         self.coord = coord
         self.damage = -1
         self.move = 1
+        self.moved = moved
         self.cell = 5
         self.atk_range = 2
         #
-        self.health = 4
+        self.health = health
         #
         self.max_health = 4
         self.image = load_image(self.name + ".png")
@@ -461,17 +467,18 @@ class PriestMgRed(pygame.sprite.Sprite):
 
 
 class PriestRed(MainUnit):
-    def __init__(self, coord, screen):
+    def __init__(self, coord, screen, health=4, moved=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "priest_r"
         self.coord = coord
         self.damage = -1
         self.move = 1
+        self.moved = moved
         self.cell = 5
         self.atk_range = 2
         #
-        self.health = 4
+        self.health = health
         #
         self.max_health = 4
         self.image = load_image(self.name + ".png")
