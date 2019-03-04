@@ -451,12 +451,12 @@ class ArcherBlue(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_b"
         self.coord = coord
-        self.damage = 20
+        self.damage = 1
         self.move = 2
         self.moved = moved
         self.cell = 3
         self.attacked = attacked
-        self.atk_range = 40
+        self.atk_range = 2
         #
         self.health = health
         #
