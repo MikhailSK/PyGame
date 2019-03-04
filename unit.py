@@ -176,15 +176,24 @@ class MainUnit:
         if self.health <= 0:
             self.dead()
 
-    def put_damage(self, coord):
-        pass
+    def put_damage(self, unit_damaged):
+        x_1 = (self.coord[0] + 10) // 30
+        y_1 = (self.coord[1] + 10) // 30
+        x_2 = (unit_damaged.coord[0] + 10) // 30
+        y_2 = (unit_damaged.coord[1] + 10) // 30
+        if abs(x_1 - x_2) + abs(y_1 - y_2) <= self.atk_range:
+            self.attacked += 1
+            unit_damaged.get_damage(self.damage)
 
     def render(self, coord, health):
         pass
 
     def dead(self):
         self.x, self.y = self.coord[0], self.coord[1]
-        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
+        x_b, y_b = (self.coord[0] + 10) // 30, (self.coord[1] + 10) // 30
+        map_units[(x_b, y_b)] = None
+        map_units.pop((x_b, y_b))
+        pygame.draw.rect(self.screen, (0, 0, 0), (self.x, self.y, 30, 30))
         pygame.display.flip()
         print("DEAD" + self.name)
 
@@ -230,7 +239,7 @@ class MainUnit:
         text_y = 190
         screen.blit(text, (text_x, text_y))
 
-        text = font.render("Cell: " + str(self.cell),
+        text = font.render("Price: " + str(self.cell),
                            1, (78, 22, 10))
         text_x = 745
         text_y = 220
@@ -293,8 +302,8 @@ class CastleBlue(MainUnit):
     def dead(self):
         self.x, self.y = self.coord[0], self.coord[1]
         print(self.x, self.y)
-        pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
-        pygame.display.flip()
+        map_units[(0, 8)] = None
+        map_units.pop((0, 8))
         print("DEAD")
         winner = "Red"
         win(winner)
@@ -327,6 +336,8 @@ class CastleRed(MainUnit):
     def dead(self):
         self.x, self.y = self.coord[0], self.coord[1]
         pygame.draw.rect(self.screen, (150, 190, 16), (self.x, self.y, 30, 30))
+        map_units[(22, 8)] = None
+        map_units.pop((22, 8))
         pygame.display.flip()
         print("DEAD")
         win("Blue")
@@ -407,12 +418,12 @@ class ArcherBlue(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_b"
         self.coord = coord
-        self.damage = 1
+        self.damage = 20
         self.move = 2
         self.moved = moved
         self.cell = 3
         self.attacked = attacked
-        self.atk_range = 2
+        self.atk_range = 40
         #
         self.health = health
         #
