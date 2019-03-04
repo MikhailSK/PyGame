@@ -318,8 +318,10 @@ class Board:
                 all_sprites.draw(screen)
 
                 self.is_map_rendered = 1
-        else:
-            self.turn = -2
+        elif self.end == 1:
+            self.turn = -3
+        elif self.end == 2:
+            self.turn = -4
 
     def get_cell(self, mouse_position):
         x_pos, y_pos = mouse_position
@@ -584,7 +586,7 @@ class Board:
                             elif d_par == 3:
                                 self.end = 1
                             elif d_par == 4:
-                                self.end = 1
+                                self.end = 2
                     self.par_click = 0
 
         elif self.par_click == 10:

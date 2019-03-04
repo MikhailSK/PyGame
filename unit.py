@@ -31,6 +31,39 @@ def load_image(name, color_key=None):
         raise SystemExit(message)
 
 
+class StartGame(pygame.sprite.Sprite):
+    image = load_image("start_screen.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = StartGame.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
+
+
+class EndGameRed(pygame.sprite.Sprite):
+    image = load_image("end_screen_r.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = EndGameRed.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
+
+
+class EndGameBlue(pygame.sprite.Sprite):
+    image = load_image("end_screen_b.png")
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = EndGameRed.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
+
+
 class CreateUnit(pygame.sprite.Sprite):
     image = load_image("create_unit.png")
 

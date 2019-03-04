@@ -11,31 +11,45 @@ FPS = 20
 res_r = 10
 res_b = 10
 par = 0
-turn = 1
+turn = 0
 
 clock = pygame.time.Clock()
+start_game = StartGame(all_sprites)
 
 
 while running:
     all_sprites.draw(screen)
-    if par == 0:
+    if par == 0 and turn > 0:
         board.render()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            new_board_pos = ((event.pos[0] - 10) // 30, (event.pos[1] - 10) // 30)
-            if event.button == 1:
-                board.get_click(event.pos)
-                if board.turn != turn:
-                    print(turn)
-                    turn = board.turn
-                    par = 1
-                board.render()
-            elif event.button == 3:
-                try:
-                    map_units[new_board_pos].get_info()
-                except KeyError:
-                    print("empty cell")
+        if event.type == pygame.MOUSEBUTTONDOWN and turn >= 0:
+            if turn != 0:
+                new_board_pos = ((event.pos[0] - 10) // 30, (event.pos[1] - 10) // 30)
+                if event.button == 1:
+                    board.get_click(event.pos)
+                    if board.turn != turn:
+                        print(turn)
+                        turn = board.turn
+                        par = 1
+                    board.render()
+                    if board.end == 1:
+                        turn = -3
+                    if board.end == 2:
+                        turn = -4
+                elif event.button == 3:
+                    try:
+                        map_units[new_board_pos].get_info()
+                    except KeyError:
+                        print("empty cell")
+            else:
+                turn = 1
+                screen.fill((0, 0, 0))
+                all_sprites.remove(start_game)
+        if turn == -3:
+            end_screen = EndGameBlue(all_sprites)
+        if turn == -4:
+            end_screen = EndGameRed(all_sprites)
     pygame.display.flip()
     clock.tick(FPS)
