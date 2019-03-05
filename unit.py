@@ -12,7 +12,9 @@ sprite = pygame.sprite.Sprite()
 
 def win(winner):
     screen.fill((0, 0, 0))
+    end_game_music.play(-1)
     print(winner)
+    pygame.mixer.music.stop()
 
 
 def load_image(name, color_key=None):
@@ -217,6 +219,12 @@ class MainUnit:
         if abs(x_1 - x_2) + abs(y_1 - y_2) <= self.atk_range:
             self.attacked += 1
             unit_damaged.get_damage(self.damage)
+            if "warrior" in self.name:
+                warrior_attack.play()
+            if "priest" in self.name:
+                heal.play()
+            if "archer" in self.name:
+                archer_attack.play()
 
     def render(self, coord, health):
         pass
@@ -229,6 +237,10 @@ class MainUnit:
         pygame.draw.rect(self.screen, (0, 0, 0), (self.x, self.y, 30, 30))
         pygame.display.flip()
         print("DEAD" + self.name)
+        if "miner" in self.name:
+            u_break.play()
+        else:
+            death.play()
 
     def get_info(self):
         print("INFO GET")
@@ -604,7 +616,7 @@ class MinerBlue(MainUnit):
     def __init__(self, coord, screen, health=8, moved=0, attacked=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
-        self.name = "miner_r"
+        self.name = "miner_b"
         self.coord = coord
         self.damage = 0
         self.move = 0
