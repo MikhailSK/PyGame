@@ -249,10 +249,12 @@ class Board:
             font = pygame.font.Font(None, 28)
 
             if self.turn == 1:
-                text = font.render("RES-B: " + str(self.res_b) + "(+" + str(self.res_b_add) + ")",
+                text = font.render("RES-B: " + str(self.res_b)
+                                   + "(+" + str(self.res_b_add) + ")",
                                    1, (78, 22, 10))
             else:
-                text = font.render("RES-R: " + str(self.res_r) + "(+" + str(self.res_r_add) + ")",
+                text = font.render("RES-R: " + str(self.res_r)
+                                   + "(+" + str(self.res_r_add) + ")",
                                    1, (78, 22, 10))
             text_x = 765
             text_y = 475
@@ -419,11 +421,13 @@ class Board:
                     archer = None
                     priest = None
                     miner = None
-                    if self.board[b_x_pos][b_y_pos] == -11 or self.board[b_x_pos][b_y_pos] == -21\
+                    if self.board[b_x_pos][b_y_pos] == -11\
+                            or self.board[b_x_pos][b_y_pos] == -21\
                             or self.board[b_x_pos][b_y_pos] == -31:
                         need_render = 0
-                        if self.select in range(11, 16) and (self.board[b_x_pos][b_y_pos] == -11
-                                                             or self.board[b_x_pos][b_y_pos] == -31):
+                        if self.select in range(11, 16)\
+                                and (self.board[b_x_pos][b_y_pos] == -11
+                                     or self.board[b_x_pos][b_y_pos] == -31):
                             if self.select == 11 and b_x_pos < 11:
                                 warrior = WarriorBlue(coord_px, screen)
                                 if (self.res_b - warrior.cell) >= 0:
@@ -465,8 +469,9 @@ class Board:
                                     print("NO RES BLUE")
                                     self.render_stat("NO RES BLUE")
                                     error.play()
-                        elif self.select in range(21, 26) and (self.board[b_x_pos][b_y_pos] == -21
-                                                               or self.board[b_x_pos][b_y_pos] == -31):
+                        elif self.select in range(21, 26)\
+                                and (self.board[b_x_pos][b_y_pos] == -21
+                                     or self.board[b_x_pos][b_y_pos] == -31):
                             if self.select == 21 and b_x_pos > 11:
                                 warrior = WarriorRed(coord_px, screen)
                                 if (self.res_r - warrior.cell) >= 0:
@@ -559,29 +564,41 @@ class Board:
                     unit = None
                     if self.turn == 1:
                         if self.select_unit.name == "warrior_b":
-                            if self.board[coord[0]][coord[1]] == -11 or self.board[coord[0]][coord[1]] == -31:
-                                unit = WarriorBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                            if self.board[coord[0]][coord[1]] == -11\
+                                    or self.board[coord[0]][coord[1]] == -31:
+                                unit = WarriorBlue(coord_px, screen,
+                                                   self.select_unit.health, self.select_unit.moved,
                                                    self.select_unit.attacked)
                         if self.select_unit.name == "archer_b":
-                            if self.board[coord[0]][coord[1]] == -11 or self.board[coord[0]][coord[1]] == -31:
-                                unit = ArcherBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                            if self.board[coord[0]][coord[1]] == -11\
+                                    or self.board[coord[0]][coord[1]] == -31:
+                                unit = ArcherBlue(coord_px, screen,
+                                                  self.select_unit.health, self.select_unit.moved,
                                                   self.select_unit.attacked)
                         if self.select_unit.name == "priest_b":
-                            if self.board[coord[0]][coord[1]] == -11 or self.board[coord[0]][coord[1]] == -31:
-                                unit = PriestBlue(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                            if self.board[coord[0]][coord[1]] == -11\
+                                    or self.board[coord[0]][coord[1]] == -31:
+                                unit = PriestBlue(coord_px, screen,
+                                                  self.select_unit.health, self.select_unit.moved,
                                                   self.select_unit.attacked)
                     else:
                         if self.select_unit.name == "warrior_r":
-                            if self.board[coord[0]][coord[1]] == -21 or self.board[coord[0]][coord[1]] == -31:
-                                unit = WarriorRed(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                            if self.board[coord[0]][coord[1]] == -21\
+                                    or self.board[coord[0]][coord[1]] == -31:
+                                unit = WarriorRed(coord_px, screen,
+                                                  self.select_unit.health, self.select_unit.moved,
                                                   self.select_unit.attacked)
                         if self.select_unit.name == "archer_r":
-                            if self.board[coord[0]][coord[1]] == -21 or self.board[coord[0]][coord[1]] == -31:
-                                unit = ArcherRed(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                            if self.board[coord[0]][coord[1]] == -21\
+                                    or self.board[coord[0]][coord[1]] == -31:
+                                unit = ArcherRed(coord_px, screen,
+                                                 self.select_unit.health, self.select_unit.moved,
                                                  self.select_unit.attacked)
                         if self.select_unit.name == "priest_r":
-                            if self.board[coord[0]][coord[1]] == -21 or self.board[coord[0]][coord[1]] == -31:
-                                unit = PriestRed(coord_px, screen, self.select_unit.health, self.select_unit.moved,
+                            if self.board[coord[0]][coord[1]] == -21\
+                                    or self.board[coord[0]][coord[1]] == -31:
+                                unit = PriestRed(coord_px, screen,
+                                                 self.select_unit.health, self.select_unit.moved,
                                                  self.select_unit.attacked)
 
                     if unit is not None and unit.moved + 1 <= unit.move\
@@ -592,7 +609,8 @@ class Board:
                                          (self.select_coord[0] * BOARD_S + 10,
                                           self.select_coord[1] * BOARD_S + 10, 30, 30))
 
-                        self.board[coord[0]][coord[1]] = self.board[self.select_coord[0]][self.select_coord[1]]
+                        self.board[coord[0]][coord[1]] = \
+                            self.board[self.select_coord[0]][self.select_coord[1]]
                         self.board[self.select_coord[0]][self.select_coord[1]] = 0
 
                         unit.render()
@@ -629,13 +647,15 @@ class Board:
                     if self.par_click == 121 and ((map_units[coord].name[-1] == "r"
                                                   or map_units[coord].name == "red_castle")
                                                   or (d_par == 5 and map_units[coord].name[-1] == "b"
-                                                      and map_units[coord].health < map_units[coord].max_health))\
+                                                      and map_units[coord].health
+                                                      < map_units[coord].max_health))\
                             and map_units[self.select_coord].attacked < 1:
                         r_t_damage = 1
                     elif self.par_click == 122 and ((map_units[coord].name[-1] == "b"
                                                     or map_units[coord].name == "blue_castle")
                                                     or (d_par == 6 and map_units[coord].name[-1] == "r"
-                                                        and map_units[coord].health < map_units[coord].max_health))\
+                                                        and map_units[coord].health
+                                                        < map_units[coord].max_health))\
                             and map_units[self.select_coord].attacked < 1:
                         r_t_damage = 1
                     else:
@@ -660,42 +680,50 @@ class Board:
                     self.par_click = 0
 
         elif self.par_click == 10:
-            if warrior_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+            if warrior_select_b.rect.collidepoint((x_pos, y_pos))\
+                    and self.turn == 1:
                 self.par_click = 2
                 self.select = 11
                 print("WARRIOR BLUE SELECTED")
                 self.render_stat("WARRIOR SELECTED")
-            elif warrior_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
+            elif warrior_select_r.rect.collidepoint((x_pos, y_pos))\
+                    and self.turn == 2:
                 self.par_click = 2
                 self.select = 21
                 print("WARRIOR RED SELECTED")
                 self.render_stat("WARRIOR SELECTED")
-            elif archer_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+            elif archer_select_b.rect.collidepoint((x_pos, y_pos))\
+                    and self.turn == 1:
                 self.par_click = 2
                 self.select = 12
                 print("ARCHER BLUE SELECTED")
                 self.render_stat("ARCHER SELECTED")
-            elif archer_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
+            elif archer_select_r.rect.collidepoint((x_pos, y_pos))\
+                    and self.turn == 2:
                 self.par_click = 2
                 self.select = 22
                 print("ARCHER RED SELECTED")
                 self.render_stat("ARCHER SELECTED")
-            elif priest_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+            elif priest_select_b.rect.collidepoint((x_pos, y_pos))\
+                    and self.turn == 1:
                 self.par_click = 2
                 self.select = 13
                 print("PRIEST BLUE SELECTED")
                 self.render_stat("PRIEST SELECTED")
-            elif priest_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
+            elif priest_select_r.rect.collidepoint((x_pos, y_pos))\
+                    and self.turn == 2:
                 self.par_click = 2
                 self.select = 23
                 print("PRIEST RED SELECTED")
                 self.render_stat("PRIEST SELECTED")
-            elif miner_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
+            elif miner_select_b.rect.collidepoint((x_pos, y_pos))\
+                    and self.turn == 1:
                 self.par_click = 2
                 self.select = 14
                 print("MINER BLUE SELECTED")
                 self.render_stat("MINER SELECTED")
-            elif miner_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
+            elif miner_select_r.rect.collidepoint((x_pos, y_pos))\
+                    and self.turn == 2:
                 self.par_click = 2
                 self.select = 24
                 print("MINER RED SELECTED")
