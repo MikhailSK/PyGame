@@ -397,7 +397,8 @@ class Board:
                             self.par_click = 12
                         else:
                             print("miss", x_pos, y_pos, sep="-------")
-                            self.render_stat("MISS")
+                            self.render_stat("              MISS")
+                            error.play()
                         self.b_x_y = None
             elif (self.select is not None and self.par_click == 2)\
                     or self.par_click == 0 or self.par_click == 2\
@@ -432,6 +433,7 @@ class Board:
                                 else:
                                     print("NO RES BLUE")
                                     self.render_stat("NO RES BLUE")
+                                    error.play()
                             elif self.select == 12 and b_x_pos < 11:
                                 archer = ArcherBlue(coord_px, screen)
                                 if (self.res_b - archer.cell) >= 0:
@@ -441,6 +443,7 @@ class Board:
                                 else:
                                     print("NO RES BLUE")
                                     self.render_stat("NO RES BLUE")
+                                    error.play()
                             elif self.select == 13 and b_x_pos < 11:
                                 priest = PriestBlue(coord_px, screen)
                                 if (self.res_b - priest.cell) >= 0:
@@ -450,6 +453,7 @@ class Board:
                                 else:
                                     print("NO RES BLUE")
                                     self.render_stat("NO RES BLUE")
+                                    error.play()
                             elif self.select == 14 and b_x_pos < 11:
                                 miner = MinerBlue(coord_px, screen)
                                 if (self.res_b - miner.cell) >= 0:
@@ -460,6 +464,7 @@ class Board:
                                 else:
                                     print("NO RES BLUE")
                                     self.render_stat("NO RES BLUE")
+                                    error.play()
                         elif self.select in range(21, 26) and (self.board[b_x_pos][b_y_pos] == -21
                                                                or self.board[b_x_pos][b_y_pos] == -31):
                             if self.select == 21 and b_x_pos > 11:
@@ -471,6 +476,7 @@ class Board:
                                 else:
                                     print("NO RES RED")
                                     self.render_stat("NO RES RED")
+                                    error.play()
                             elif self.select == 22 and b_x_pos > 11:
                                 archer = ArcherRed(coord_px, screen)
                                 if (self.res_r - archer.cell) >= 0:
@@ -480,6 +486,7 @@ class Board:
                                 else:
                                     print("NO RES RED")
                                     self.render_stat("NO RES RED")
+                                    error.play()
                             elif self.select == 23 and b_x_pos > 11:
                                 priest = PriestRed(coord_px, screen)
                                 if (self.res_r - priest.cell) >= 0:
@@ -489,6 +496,7 @@ class Board:
                                 else:
                                     print("NO RES RED")
                                     self.render_stat("NO RES RED")
+                                    error.play()
                             elif self.select == 24 and b_x_pos > 11:
                                 miner = MinerRed(coord_px, screen)
                                 if (self.res_r - miner.cell) >= 0:
@@ -499,6 +507,7 @@ class Board:
                                 else:
                                     print("NO RES RED")
                                     self.render_stat("NO RES RED")
+                                    error.play()
 
                         if need_render == 1:
                             map_units[coord] = warrior
@@ -544,6 +553,7 @@ class Board:
                     except KeyError:
                         print("TRY OTHER")
                         self.render_stat("TRY OTHER")
+                        error.play()
                 elif self.par_click == 110:
                     print("Ready to move", coord)
                     unit = None
@@ -596,25 +606,42 @@ class Board:
                 elif self.par_click == 121 or self.par_click == 122:
                     r_t_damage = 0
                     d_par = 0
-                    if map_units[coord].name == "miner_r":
-                        d_par = 1
-                    elif map_units[coord].name == "miner_b":
-                        d_par = 2
-                    elif map_units[coord].name == "red_castle":
-                        d_par = 3
-                    elif map_units[coord].name == "blue_castle":
-                        d_par = 4
+                    if map_units[self.select_coord].name == "priest_b":
+                        d_par = 5
+                    elif map_units[self.select_coord].name == "priest_r":
+                        d_par = 6
+                    else:
+                        try:
+                            if map_units[coord].name == "miner_r":
+                                d_par = 1
+                            elif map_units[coord].name == "miner_b":
+                                d_par = 2
+                            elif map_units[coord].name == "red_castle":
+                                d_par = 3
+                            elif map_units[coord].name == "blue_castle":
+                                d_par = 4
+                        except KeyError:
+                            self.par_click = 0
+                            print("TRY OTHER")
+                            self.render_stat("TRY OTHER")
+                            error.play()
 
                     if self.par_click == 121 and ((map_units[coord].name[-1] == "r"
                                                   or map_units[coord].name == "red_castle")
-                                                  or (d_par == 4 and map_units[coord].name[-1] == "b"))\
+                                                  or (d_par == 5 and map_units[coord].name[-1] == "b"
+                                                      and map_units[coord].health < map_units[coord].max_health))\
                             and map_units[self.select_coord].attacked < 1:
                         r_t_damage = 1
                     elif self.par_click == 122 and ((map_units[coord].name[-1] == "b"
                                                     or map_units[coord].name == "blue_castle")
-                                                    or (d_par == 4 and map_units[coord].name[-1] == "r"))\
+                                                    or (d_par == 6 and map_units[coord].name[-1] == "r"
+                                                        and map_units[coord].health < map_units[coord].max_health))\
                             and map_units[self.select_coord].attacked < 1:
                         r_t_damage = 1
+                    else:
+                        print("TRY OTHER")
+                        self.render_stat("         TRY OTHER")
+                        error.play()
 
                     if r_t_damage:
                         map_units[self.select_coord].put_damage(map_units[coord])
