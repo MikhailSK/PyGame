@@ -323,6 +323,16 @@ class Board:
         elif self.end == 2:
             self.turn = -4
 
+    @staticmethod
+    def render_stat(text):
+        pygame.draw.rect(screen, (255, 255, 255), (700, 539, 230, 70))
+        font = pygame.font.Font(None, 30)
+        text = font.render(text,
+                           1, (218, 22, 10))
+        text_x = 707
+        text_y = 570
+        screen.blit(text, (text_x, text_y))
+
     def get_cell(self, mouse_position):
         x_pos, y_pos = mouse_position
         if self.par_click == 0 or self.par_click == 2\
@@ -334,6 +344,7 @@ class Board:
                     and self.select is None:
                     if self.par_click != 2:
                         if sprite.rect.collidepoint((x_pos, y_pos)):
+                            sound_change_turn.play()
                             print("END TURN")
 
                             for unit in map_units.keys():
@@ -341,6 +352,7 @@ class Board:
                                 map_units[unit].attacked = 0
 
                             if self.turn == 1:
+                                self.render_stat("     END TURN BLUE")
                                 self.turn = 2
                                 self.res_b += self.res_b_add
 
@@ -355,6 +367,7 @@ class Board:
                                 screen.blit(text, (text_x, text_y))
 
                             elif self.turn == 2:
+                                self.render_stat("     END TURN RED")
                                 self.turn = 1
                                 self.res_r += self.res_r_add
 
@@ -369,15 +382,22 @@ class Board:
                                 screen.blit(text, (text_x, text_y))
                         elif create_unit.rect.collidepoint((x_pos, y_pos)):
                             print("CREATE NEW")
+                            button.play()
+                            self.render_stat("CREATE NEW")
                             self.par_click = 10
                         elif move_unit.rect.collidepoint((x_pos, y_pos)):
                             print("MOVE")
+                            button.play()
+                            self.render_stat("MOVE")
                             self.par_click = 11
                         elif damage_unit.rect.collidepoint((x_pos, y_pos)):
                             print("DAMAGE")
+                            button.play()
+                            self.render_stat("DAMAGE")
                             self.par_click = 12
                         else:
                             print("miss", x_pos, y_pos, sep="-------")
+                            self.render_stat("MISS")
                         self.b_x_y = None
             elif (self.select is not None and self.par_click == 2)\
                     or self.par_click == 0 or self.par_click == 2\
@@ -411,6 +431,7 @@ class Board:
                                     need_render = 1
                                 else:
                                     print("NO RES BLUE")
+                                    self.render_stat("NO RES BLUE")
                             elif self.select == 12 and b_x_pos < 11:
                                 archer = ArcherBlue(coord_px, screen)
                                 if (self.res_b - archer.cell) >= 0:
@@ -419,6 +440,7 @@ class Board:
                                     need_render = 2
                                 else:
                                     print("NO RES BLUE")
+                                    self.render_stat("NO RES BLUE")
                             elif self.select == 13 and b_x_pos < 11:
                                 priest = PriestBlue(coord_px, screen)
                                 if (self.res_b - priest.cell) >= 0:
@@ -427,6 +449,7 @@ class Board:
                                     need_render = 3
                                 else:
                                     print("NO RES BLUE")
+                                    self.render_stat("NO RES BLUE")
                             elif self.select == 14 and b_x_pos < 11:
                                 miner = MinerBlue(coord_px, screen)
                                 if (self.res_b - miner.cell) >= 0:
@@ -435,7 +458,8 @@ class Board:
                                     need_render = 4
                                     self.res_b_add += 2
                                 else:
-                                    print("NO RES RED")
+                                    print("NO RES BLUE")
+                                    self.render_stat("NO RES BLUE")
                         elif self.select in range(21, 26) and (self.board[b_x_pos][b_y_pos] == -21
                                                                or self.board[b_x_pos][b_y_pos] == -31):
                             if self.select == 21 and b_x_pos > 11:
@@ -446,6 +470,7 @@ class Board:
                                     need_render = 1
                                 else:
                                     print("NO RES RED")
+                                    self.render_stat("NO RES RED")
                             elif self.select == 22 and b_x_pos > 11:
                                 archer = ArcherRed(coord_px, screen)
                                 if (self.res_r - archer.cell) >= 0:
@@ -454,6 +479,7 @@ class Board:
                                     need_render = 2
                                 else:
                                     print("NO RES RED")
+                                    self.render_stat("NO RES RED")
                             elif self.select == 23 and b_x_pos > 11:
                                 priest = PriestRed(coord_px, screen)
                                 if (self.res_r - priest.cell) >= 0:
@@ -462,6 +488,7 @@ class Board:
                                     need_render = 3
                                 else:
                                     print("NO RES RED")
+                                    self.render_stat("NO RES RED")
                             elif self.select == 24 and b_x_pos > 11:
                                 miner = MinerRed(coord_px, screen)
                                 if (self.res_r - miner.cell) >= 0:
@@ -471,27 +498,33 @@ class Board:
                                     self.res_r_add += 2
                                 else:
                                     print("NO RES RED")
+                                    self.render_stat("NO RES RED")
 
                         if need_render == 1:
                             map_units[coord] = warrior
                             warrior.render()
                             warrior.all_sprites.draw(screen)
+                            spawn.play()
                         elif need_render == 2:
                             map_units[coord] = archer
                             archer.render()
                             archer.all_sprites.draw(screen)
+                            spawn.play()
                         elif need_render == 3:
                             map_units[coord] = priest
                             priest.render()
                             priest.all_sprites.draw(screen)
+                            spawn.play()
                         elif need_render == 4:
                             map_units[coord] = miner
                             miner.render()
                             miner.all_sprites.draw(screen)
+                            build.play()
 
                         self.select = None
                         self.par_click = 0
                 elif self.par_click == 11 or self.par_click == 12:
+                    click.play()
                     try:
                         self.select_unit = map_units[coord]
                         if self.par_click == 11:
@@ -499,15 +532,18 @@ class Board:
                             self.select_coord = coord
                         elif self.par_click == 12:
                             if map_units[coord].name[-1] == "b" and self.turn == 1:
-                                print("BLUE START ATACK")
+                                print("BLUE START ATTACK")
+                                self.render_stat("BLUE START ATTACK")
                                 self.par_click = 121
                             if map_units[coord].name[-1] == "r" and self.turn == 2:
-                                print("RED START ATACK")
+                                print("RED START RED")
+                                self.render_stat("RED START ATTACK")
                                 self.par_click = 122
                             if self.par_click != 12:
                                 self.select_coord = coord
                     except KeyError:
                         print("TRY OTHER")
+                        self.render_stat("TRY OTHER")
                 elif self.par_click == 110:
                     print("Ready to move", coord)
                     unit = None
@@ -538,7 +574,10 @@ class Board:
                                 unit = PriestRed(coord_px, screen, self.select_unit.health, self.select_unit.moved,
                                                  self.select_unit.attacked)
 
-                    if unit is not None and unit.moved + 1 <= unit.move:
+                    if unit is not None and unit.moved + 1 <= unit.move\
+                            and (abs(self.select_coord[0] - coord[0])
+                                 + abs(self.select_coord[1] - coord[1])) == 1:
+                        move.play()
                         pygame.draw.rect(self.screen, (0, 0, 0),
                                          (self.select_coord[0] * BOARD_S + 10,
                                           self.select_coord[1] * BOARD_S + 10, 30, 30))
@@ -565,14 +604,18 @@ class Board:
                         d_par = 3
                     elif map_units[coord].name == "blue_castle":
                         d_par = 4
-                    if self.par_click == 121 and (map_units[coord].name[-1] == "r"
-                                                  or map_units[coord].name == "red_castle")\
+
+                    if self.par_click == 121 and ((map_units[coord].name[-1] == "r"
+                                                  or map_units[coord].name == "red_castle")
+                                                  or (d_par == 4 and map_units[coord].name[-1] == "b"))\
                             and map_units[self.select_coord].attacked < 1:
                         r_t_damage = 1
-                    elif self.par_click == 122 and (map_units[coord].name[-1] == "b"
-                                                    or map_units[coord].name == "blue_castle")\
+                    elif self.par_click == 122 and ((map_units[coord].name[-1] == "b"
+                                                    or map_units[coord].name == "blue_castle")
+                                                    or (d_par == 4 and map_units[coord].name[-1] == "r"))\
                             and map_units[self.select_coord].attacked < 1:
                         r_t_damage = 1
+
                     if r_t_damage:
                         map_units[self.select_coord].put_damage(map_units[coord])
                         try:
@@ -594,38 +637,45 @@ class Board:
                 self.par_click = 2
                 self.select = 11
                 print("WARRIOR BLUE SELECTED")
+                self.render_stat("WARRIOR SELECTED")
             elif warrior_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
                 self.par_click = 2
                 self.select = 21
                 print("WARRIOR RED SELECTED")
+                self.render_stat("WARRIOR SELECTED")
             elif archer_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
                 self.par_click = 2
                 self.select = 12
                 print("ARCHER BLUE SELECTED")
+                self.render_stat("ARCHER SELECTED")
             elif archer_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
                 self.par_click = 2
                 self.select = 22
                 print("ARCHER RED SELECTED")
+                self.render_stat("ARCHER SELECTED")
             elif priest_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
                 self.par_click = 2
                 self.select = 13
                 print("PRIEST BLUE SELECTED")
+                self.render_stat("PRIEST SELECTED")
             elif priest_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
                 self.par_click = 2
                 self.select = 23
                 print("PRIEST RED SELECTED")
-            elif priest_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
-                self.par_click = 2
-                self.select = 14
-                print("MINER BLUE SELECTED")
+                self.render_stat("PRIEST SELECTED")
             elif miner_select_b.rect.collidepoint((x_pos, y_pos)) and self.turn == 1:
                 self.par_click = 2
                 self.select = 14
                 print("MINER BLUE SELECTED")
+                self.render_stat("MINER SELECTED")
             elif miner_select_r.rect.collidepoint((x_pos, y_pos)) and self.turn == 2:
                 self.par_click = 2
                 self.select = 24
                 print("MINER RED SELECTED")
+                self.render_stat("MINER SELECTED")
+
+            if self.par_click == 2:
+                button_unit.play()
 
     def get_click(self, mouse_pos):
         self.get_cell(mouse_pos)
