@@ -15,9 +15,12 @@ turn = 0
 
 clock = pygame.time.Clock()
 start_game = StartGame(all_sprites)
-
+sap = 0
 
 while running:
+    if sap == 0:
+        pygame.mixer.music.play(-1)
+        sap = 1
     all_sprites.draw(screen)
     if par == 0 and turn > 0:
         board.render()
@@ -26,6 +29,9 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and turn >= 0:
             if turn != 0:
+                if sap == 1:
+                    sap = 2
+                    # sound1.play()
                 new_board_pos = ((event.pos[0] - 10) // 30, (event.pos[1] - 10) // 30)
                 if event.button == 1:
                     board.get_click(event.pos)
@@ -47,6 +53,16 @@ while running:
                 turn = 1
                 screen.fill((0, 0, 0))
                 all_sprites.remove(start_game)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_n:
+                pygame.mixer.music.set_volume(0)
+            elif event.key == pygame.K_m:
+                pygame.mixer.music.set_volume(1)
+            elif event.key == pygame.K_b:
+                pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() - 0.1)
+            elif event.key == pygame.K_v:
+                pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.1)
+
         if turn == -3:
             end_screen = EndGameBlue(all_sprites)
         if turn == -4:
