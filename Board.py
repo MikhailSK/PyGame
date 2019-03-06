@@ -262,8 +262,6 @@ class Board:
 
             if self.is_map_rendered == 0:
 
-                pygame.display.set_icon(load_image('blue_castle.png'))
-
                 pygame.draw.rect(screen, (125, 120, 74),
                                  (724, 380, 200, 70))
 

@@ -5,6 +5,8 @@ from unit import *
 board = Board(BOARD_W, BOARD_H, screen)
 screen.fill((0, 0, 0))
 
+pygame.display.set_icon(load_image('icon.png'))
+
 running = True
 par_space = 0
 FPS = 20
