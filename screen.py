@@ -11,7 +11,6 @@ pygame.mixer.init()
 
 main_theme = pygame.mixer.music.load("music\\main3.mp3")
 
-# main_theme = pygame.mixer.music.load("music\\main2.wav")
 
 sound_change_turn = pygame.mixer.Sound("music\\button_end.wav")
 archer_attack = pygame.mixer.Sound("music\\archer_attack.wav")

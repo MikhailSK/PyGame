@@ -244,7 +244,7 @@ class Board:
                 x_pos += 1
 
             pygame.draw.rect(screen, (238, 160, 74),
-                             (724, 452, 200, 60))
+                             (724, 520, 200, 60))
 
             font = pygame.font.Font(None, 28)
 
@@ -257,19 +257,19 @@ class Board:
                                    + "(+" + str(self.res_r_add) + ")",
                                    1, (78, 22, 10))
             text_x = 765
-            text_y = 475
+            text_y = 543
             screen.blit(text, (text_x, text_y))
 
             if self.is_map_rendered == 0:
 
-                pygame.draw.rect(screen, (125, 120, 74),
-                                 (724, 380, 200, 70))
+                pygame.draw.rect(screen, (190, 245, 116),
+                                 (724, 440, 200, 70))
 
                 font = pygame.font.Font(None, 40)
                 text = font.render("BLUE",
                                    1, (28, 22, 210))
                 text_x = 788
-                text_y = 403
+                text_y = 463
                 screen.blit(text, (text_x, text_y))
                 for i in arr_wall:
                     wall = Wall([int(i[0]) * BOARD_S + 10,
@@ -309,12 +309,11 @@ class Board:
                                  (5, 520, 700, 5))
                 pygame.display.flip()
 
-                all_sprites = pygame.sprite.Group()
                 sprite.image = load_image("end_game.png")
                 sprite.rect = sprite.image.get_rect()
                 all_sprites.add(sprite)
                 sprite.rect.x = 733
-                sprite.rect.y = 300
+                sprite.rect.y = 360
                 all_sprites.draw(screen)
 
                 self.is_map_rendered = 1
@@ -325,12 +324,12 @@ class Board:
 
     @staticmethod
     def render_stat(text):
-        pygame.draw.rect(screen, (255, 255, 255), (700, 539, 230, 70))
+        pygame.draw.rect(screen, (152, 251, 152), (700, 589, 230, 35))
         font = pygame.font.Font(None, 30)
         text = font.render(text,
                            1, (218, 22, 10))
         text_x = 707
-        text_y = 570
+        text_y = 600
         screen.blit(text, (text_x, text_y))
 
     def get_cell(self, mouse_position):
@@ -356,14 +355,14 @@ class Board:
                                 self.turn = 2
                                 self.res_b += self.res_b_add
 
-                                pygame.draw.rect(screen, (125, 120, 74),
-                                                 (724, 380, 200, 70))
+                                pygame.draw.rect(screen, (190, 245, 116),
+                                                 (724, 440, 200, 70))
 
                                 font = pygame.font.Font(None, 40)
                                 text = font.render("RED",
                                                    1, (218, 22, 10))
                                 text_x = 795
-                                text_y = 403
+                                text_y = 463
                                 screen.blit(text, (text_x, text_y))
 
                             elif self.turn == 2:
@@ -371,29 +370,29 @@ class Board:
                                 self.turn = 1
                                 self.res_r += self.res_r_add
 
-                                pygame.draw.rect(screen, (125, 120, 74),
-                                                 (790, 380, 70, 70))
+                                pygame.draw.rect(screen, (190, 245, 116),
+                                                 (790, 440, 70, 70))
 
                                 font = pygame.font.Font(None, 40)
                                 text = font.render("BLUE",
                                                    1, (28, 22, 210))
                                 text_x = 788
-                                text_y = 403
+                                text_y = 463
                                 screen.blit(text, (text_x, text_y))
                         elif create_unit.rect.collidepoint((x_pos, y_pos)):
                             print("CREATE NEW")
                             button.play()
-                            self.render_stat("CREATE NEW")
+                            self.render_stat("      CREATE NEW")
                             self.par_click = 10
                         elif move_unit.rect.collidepoint((x_pos, y_pos)):
                             print("MOVE")
                             button.play()
-                            self.render_stat("MOVE")
+                            self.render_stat("              MOVE")
                             self.par_click = 11
                         elif damage_unit.rect.collidepoint((x_pos, y_pos)):
                             print("DAMAGE")
                             button.play()
-                            self.render_stat("DAMAGE")
+                            self.render_stat("          DAMAGE")
                             self.par_click = 12
                         else:
                             print("miss", x_pos, y_pos, sep="-------")

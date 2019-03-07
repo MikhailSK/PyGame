@@ -202,6 +202,7 @@ class MainUnit:
         self.cell = 0
         self.moved = 0
         self.attacked = 0
+        self.res_in_turn = 0
 
     def move(self):
         pass
@@ -244,56 +245,83 @@ class MainUnit:
 
     def get_info(self):
         print("INFO GET")
+        button.play()
         pygame.draw.rect(screen, (238, 160, 74),
-                         (724, 25, 200, 255))
+                         (724, 10, 200, 335))
         font = pygame.font.Font(None, 28)
 
         text = font.render("Name: " + str(self.name),
                            1, (78, 22, 10))
         text_x = 745
-        text_y = 40
+        text_y = 20
         screen.blit(text, (text_x, text_y))
 
         text = font.render("Max Health: " + str(self.max_health),
                            1, (78, 22, 10))
         text_x = 745
-        text_y = 70
+        text_y = 50
         screen.blit(text, (text_x, text_y))
 
         text = font.render("Health: " + str(self.health),
                            1, (78, 22, 10))
         text_x = 745
-        text_y = 100
+        text_y = 80
         screen.blit(text, (text_x, text_y))
 
         text = font.render("Damage: " + str(self.damage),
                            1, (78, 22, 10))
         text_x = 745
-        text_y = 130
+        text_y = 110
         screen.blit(text, (text_x, text_y))
 
         text = font.render("Range: " + str(self.atk_range),
                            1, (78, 22, 10))
         text_x = 745
-        text_y = 160
+        text_y = 140
         screen.blit(text, (text_x, text_y))
 
         text = font.render("Move: " + str(self.move),
                            1, (78, 22, 10))
         text_x = 745
-        text_y = 190
+        text_y = 170
         screen.blit(text, (text_x, text_y))
 
         text = font.render("Price: " + str(self.cell),
                            1, (78, 22, 10))
         text_x = 745
-        text_y = 220
+        text_y = 200
         screen.blit(text, (text_x, text_y))
 
-        text = font.render("Coords: " + str(self.coord),
+        text = font.render("Coords: " +
+                           str((self.coord[0] + 10) // 30) + "-"
+                           + str((self.coord[1] + 10) // 30),
                            1, (78, 22, 10))
         text_x = 745
-        text_y = 250
+        text_y = 230
+
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Moved: " +
+                           str(self.moved),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 260
+
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Attacked: " +
+                           str(self.attacked),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 290
+
+        screen.blit(text, (text_x, text_y))
+
+        text = font.render("Add res in turn: " +
+                           str(self.res_in_turn),
+                           1, (78, 22, 10))
+        text_x = 745
+        text_y = 320
 
         screen.blit(text, (text_x, text_y))
 
@@ -592,6 +620,7 @@ class MinerRed(MainUnit):
         self.moved = moved
         self.cell = 7
         self.atk_range = 0
+        self.res_in_turn = 2
         self.attacked = attacked
         #
         self.health = health
@@ -622,6 +651,7 @@ class MinerBlue(MainUnit):
         self.move = 0
         self.moved = moved
         self.cell = 7
+        self.res_in_turn = 2
         self.attacked = attacked
         self.atk_range = 0
         #

@@ -31,9 +31,6 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and turn >= 0:
             if turn != 0:
-                if sap == 1:
-                    sap = 2
-                    # sound1.play()
                 new_board_pos = ((event.pos[0] - 10) // 30,
                                  (event.pos[1] - 10) // 30)
                 if event.button == 1:
@@ -51,9 +48,35 @@ while running:
                     try:
                         map_units[new_board_pos].get_info()
                     except KeyError:
-                        print("empty cell")
+                        if warrior_select_b.rect.collidepoint(event.pos):
+                            unit = WarriorBlue((0, 0), screen)
+                            unit.get_info()
+                        elif warrior_select_r.rect.collidepoint(event.pos):
+                            unit = WarriorRed((0, 0), screen)
+                            unit.get_info()
+                        elif archer_select_b.rect.collidepoint(event.pos):
+                            unit = ArcherBlue((0, 0), screen)
+                            unit.get_info()
+                        elif archer_select_r.rect.collidepoint(event.pos):
+                            unit = ArcherRed((0, 0), screen)
+                            unit.get_info()
+                        elif priest_select_b.rect.collidepoint(event.pos):
+                            unit = PriestBlue((0, 0), screen)
+                            unit.get_info()
+                        elif priest_select_r.rect.collidepoint(event.pos):
+                            unit = PriestRed((0, 0), screen)
+                            unit.get_info()
+                        elif miner_select_b.rect.collidepoint(event.pos):
+                            unit = MinerBlue((0, 0), screen)
+                            unit.get_info()
+                        elif miner_select_r.rect.collidepoint(event.pos):
+                            unit = MinerRed((0, 0), screen)
+                            unit.get_info()
+                        else:
+                            print("empty cell")
             else:
                 turn = 1
+                click.play()
                 screen.fill((0, 0, 0))
                 all_sprites.remove(start_game)
         if event.type == pygame.KEYDOWN:
