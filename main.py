@@ -15,7 +15,6 @@ res_b = 10
 par = 0
 turn = 0
 
-clock = pygame.time.Clock()
 start_game = StartGame(all_sprites)
 sap = 0
 
