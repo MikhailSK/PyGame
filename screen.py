@@ -9,6 +9,8 @@ size = width, height = BOARD_W * BOARD_S + 250,\
                        BOARD_H * BOARD_S + 120
 pygame.mixer.init()
 
+clock = pygame.time.Clock()
+
 main_theme = pygame.mixer.music.load("music\\main3.mp3")
 
 
