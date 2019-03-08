@@ -9,9 +9,10 @@ size = width, height = BOARD_W * BOARD_S + 250,\
                        BOARD_H * BOARD_S + 120
 pygame.mixer.init()
 
-main_theme = pygame.mixer.music.load("music\\main.mp3")
+clock = pygame.time.Clock()
 
-# main_theme = pygame.mixer.music.load("music\\main2.wav")
+main_theme = pygame.mixer.music.load("music\\main3.mp3")
+
 
 sound_change_turn = pygame.mixer.Sound("music\\button_end.wav")
 archer_attack = pygame.mixer.Sound("music\\archer_attack.wav")
