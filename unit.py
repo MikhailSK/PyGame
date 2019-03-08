@@ -219,13 +219,17 @@ class MainUnit:
         y_2 = (unit_damaged.coord[1] + 10) // 30
         if abs(x_1 - x_2) + abs(y_1 - y_2) <= self.atk_range:
             self.attacked += 1
-            unit_damaged.get_damage(self.damage)
             if "warrior" in self.name:
                 warrior_attack.play()
+                pygame.time.wait(int(warrior_attack.get_length() * 1000))
             if "priest" in self.name:
                 heal.play()
+                pygame.time.wait(int(heal.get_length() * 1000))
             if "archer" in self.name:
                 archer_attack.play()
+                pygame.time.wait(int(archer_attack.get_length() * 1000))
+
+            unit_damaged.get_damage(self.damage)
 
     def render(self, coord, health):
         pass
@@ -240,12 +244,15 @@ class MainUnit:
         print("DEAD" + self.name)
         if "miner" in self.name:
             u_break.play()
+            pygame.time.wait(int(u_break.get_length() * 1000))
         else:
             death.play()
+            pygame.time.wait(int(death.get_length() * 1000))
 
     def get_info(self):
         print("INFO GET")
         button.play()
+        pygame.time.wait(int(button.get_length() * 1000))
         pygame.draw.rect(screen, (238, 160, 74),
                          (724, 10, 200, 335))
         font = pygame.font.Font(None, 28)
@@ -491,12 +498,12 @@ class ArcherBlue(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_b"
         self.coord = coord
-        self.damage = 1
+        self.damage = 100
         self.move = 2
         self.moved = moved
         self.cell = 3
         self.attacked = attacked
-        self.atk_range = 2
+        self.atk_range = 200
         #
         self.health = health
         #
