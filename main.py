@@ -5,6 +5,8 @@ from unit import *
 board = Board(BOARD_W, BOARD_H, screen)
 screen.fill((0, 0, 0))
 
+pygame.display.set_icon(load_image('icon.png'))
+
 running = True
 par_space = 0
 FPS = 20
@@ -13,7 +15,6 @@ res_b = 10
 par = 0
 turn = 0
 
-clock = pygame.time.Clock()
 start_game = StartGame(all_sprites)
 sap = 0
 
@@ -29,10 +30,8 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and turn >= 0:
             if turn != 0:
-                if sap == 1:
-                    sap = 2
-                    # sound1.play()
-                new_board_pos = ((event.pos[0] - 10) // 30, (event.pos[1] - 10) // 30)
+                new_board_pos = ((event.pos[0] - 10) // 30,
+                                 (event.pos[1] - 10) // 30)
                 if event.button == 1:
                     board.get_click(event.pos)
                     if board.turn != turn:
@@ -48,9 +47,35 @@ while running:
                     try:
                         map_units[new_board_pos].get_info()
                     except KeyError:
-                        print("empty cell")
+                        if warrior_select_b.rect.collidepoint(event.pos):
+                            unit = WarriorBlue((0, 0), screen)
+                            unit.get_info()
+                        elif warrior_select_r.rect.collidepoint(event.pos):
+                            unit = WarriorRed((0, 0), screen)
+                            unit.get_info()
+                        elif archer_select_b.rect.collidepoint(event.pos):
+                            unit = ArcherBlue((0, 0), screen)
+                            unit.get_info()
+                        elif archer_select_r.rect.collidepoint(event.pos):
+                            unit = ArcherRed((0, 0), screen)
+                            unit.get_info()
+                        elif priest_select_b.rect.collidepoint(event.pos):
+                            unit = PriestBlue((0, 0), screen)
+                            unit.get_info()
+                        elif priest_select_r.rect.collidepoint(event.pos):
+                            unit = PriestRed((0, 0), screen)
+                            unit.get_info()
+                        elif miner_select_b.rect.collidepoint(event.pos):
+                            unit = MinerBlue((0, 0), screen)
+                            unit.get_info()
+                        elif miner_select_r.rect.collidepoint(event.pos):
+                            unit = MinerRed((0, 0), screen)
+                            unit.get_info()
+                        else:
+                            print("empty cell")
             else:
                 turn = 1
+                click.play()
                 screen.fill((0, 0, 0))
                 all_sprites.remove(start_game)
         if event.type == pygame.KEYDOWN:
@@ -59,9 +84,11 @@ while running:
             elif event.key == pygame.K_m:
                 pygame.mixer.music.set_volume(1)
             elif event.key == pygame.K_b:
-                pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() - 0.1)
+                pygame.mixer.music.set_volume(
+                    pygame.mixer.music.get_volume() - 0.1)
             elif event.key == pygame.K_v:
-                pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.1)
+                pygame.mixer.music.set_volume(
+                    pygame.mixer.music.get_volume() + 0.1)
 
         if turn == -3:
             end_screen = EndGameBlue(all_sprites)
