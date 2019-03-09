@@ -44,3 +44,5 @@ click = pygame.mixer.Sound("music\\click.wav")
 screen = pygame.display.set_mode(size)
 # новое имя окошка
 pygame.display.set_caption("The Best Strategy Game")
+
+unit_sprites = pygame.sprite.Group()

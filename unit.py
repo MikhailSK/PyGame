@@ -235,6 +235,8 @@ class MainUnit:
         # сколько ресурсов в ход будет добавлять
         self.res_in_turn = 0
 
+        self.par_image = 1
+
     # функция перемещения
     def move(self):
         pass
@@ -299,7 +301,6 @@ class MainUnit:
     def get_info(self):
         print("INFO GET")
         button.play()
-        pygame.time.wait(int(button.get_length() * 1000))
         pygame.draw.rect(screen, (238, 160, 74),
                          (724, 10, 200, 335))
         font = pygame.font.Font(None, 28)
@@ -504,6 +505,12 @@ class WarriorRed(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 0
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         warrior_r = CastleMgRed(self.all_sprites, self)
         warrior_r.rect.x = self.coord[0] + 1
         warrior_r.rect.y = self.coord[1] + 1
@@ -537,6 +544,12 @@ class WarriorBlue(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 0
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         warrior_b = CastleMgRed(self.all_sprites, self)
         warrior_b.rect.x = self.coord[0] + 1
         warrior_b.rect.y = self.coord[1] + 1
@@ -570,6 +583,12 @@ class ArcherBlue(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 0
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         archer_b = ArcherMgBlue(self.all_sprites, self)
         archer_b.rect.x = self.coord[0] + 1
         archer_b.rect.y = self.coord[1] + 1
@@ -603,6 +622,12 @@ class ArcherRed(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 0
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         archer_r = ArcherMgRed(self.all_sprites, self)
         archer_r.rect.x = self.coord[0] + 1
         archer_r.rect.y = self.coord[1] + 1
@@ -636,6 +661,12 @@ class PriestBlue(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 0
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         priest_b = PriestMgBlue(self.all_sprites, self)
         priest_b.rect.x = self.coord[0] + 1
         priest_b.rect.y = self.coord[1] + 1
@@ -669,6 +700,12 @@ class PriestRed(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 0
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         priest_r = PriestMgRed(self.all_sprites, self)
         priest_r.rect.x = self.coord[0] + 1
         priest_r.rect.y = self.coord[1] + 1
@@ -703,6 +740,12 @@ class MinerRed(MainUnit):
         self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 0
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         miner_r = MinerMgRed(self.all_sprites, self)
         miner_r.rect.x = self.coord[0] + 1
         miner_r.rect.y = self.coord[1] + 1
@@ -734,9 +777,14 @@ class MinerBlue(MainUnit):
         self.health = health
         #
         self.max_health = 8
-        self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 0
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         miner_r = MinerMgRed(self.all_sprites, self)
         miner_r.rect.x = self.coord[0] + 1
         miner_r.rect.y = self.coord[1] + 1

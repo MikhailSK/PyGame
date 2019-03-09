@@ -366,7 +366,6 @@ class Board:
                     if self.par_click != 2:
                         if end_turn.rect.collidepoint((x_pos, y_pos)):
                             sound_change_turn.play()
-                            pygame.time.wait(int(sound_change_turn.get_length() * 1000))
                             print("END TURN")
 
                             for unit in map_units.keys():
@@ -405,26 +404,26 @@ class Board:
                         elif create_unit.rect.collidepoint((x_pos, y_pos)):
                             print("CREATE NEW")
                             button.play()
-                            pygame.time.wait(int(button.get_length() * 1000))
+                            pygame.time.wait(int(button.get_length() * 100))
                             self.render_stat("      CREATE NEW")
                             self.par_click = 10
                         elif move_unit.rect.collidepoint((x_pos, y_pos)):
                             print("MOVE")
                             button.play()
-                            pygame.time.wait(int(button.get_length() * 1000))
+                            pygame.time.wait(int(button.get_length() * 100))
                             self.render_stat("              MOVE")
                             self.par_click = 11
                         elif damage_unit.rect.collidepoint((x_pos, y_pos)):
                             print("DAMAGE")
                             button.play()
-                            pygame.time.wait(int(button.get_length() * 1000))
+                            pygame.time.wait(int(button.get_length() * 100))
                             self.render_stat("          DAMAGE")
                             self.par_click = 12
                         else:
                             print("miss", x_pos, y_pos, sep="-------")
                             self.render_stat("              MISS")
                             error.play()
-                            pygame.time.wait(int(error.get_length() * 1000))
+                            pygame.time.wait(int(error.get_length() * 100))
                         self.b_x_y = None
             elif (self.select is not None and self.par_click == 2)\
                     or self.par_click == 0 or self.par_click == 2\
@@ -472,7 +471,7 @@ class Board:
                                     print("NO RES BLUE")
                                     self.render_stat("NO RES BLUE")
                                     error.play()
-                                    pygame.time.wait(int(error.get_length() * 1000))
+                                    pygame.time.wait(int(error.get_length() * 100))
                             elif self.select == 13 and b_x_pos < 11:
                                 priest = PriestBlue(coord_px, screen)
                                 if (self.res_b - priest.cell) >= 0:
@@ -483,7 +482,7 @@ class Board:
                                     print("NO RES BLUE")
                                     self.render_stat("NO RES BLUE")
                                     error.play()
-                                    pygame.time.wait(int(error.get_length() * 1000))
+                                    pygame.time.wait(int(error.get_length() * 100))
                             elif self.select == 14 and b_x_pos < 11:
                                 miner = MinerBlue(coord_px, screen)
                                 if (self.res_b - miner.cell) >= 0:
@@ -495,7 +494,7 @@ class Board:
                                     print("NO RES BLUE")
                                     self.render_stat("NO RES BLUE")
                                     error.play()
-                                    pygame.time.wait(int(error.get_length() * 1000))
+                                    pygame.time.wait(int(error.get_length() * 100))
                         elif self.select in range(21, 26)\
                                 and (self.board[b_x_pos][b_y_pos] == -21
                                      or self.board[b_x_pos][b_y_pos] == -31):
@@ -509,7 +508,7 @@ class Board:
                                     print("NO RES RED")
                                     self.render_stat("NO RES RED")
                                     error.play()
-                                    pygame.time.wait(int(error.get_length() * 1000))
+                                    pygame.time.wait(int(error.get_length() * 100))
                             elif self.select == 22 and b_x_pos > 11:
                                 archer = ArcherRed(coord_px, screen)
                                 if (self.res_r - archer.cell) >= 0:
@@ -520,7 +519,7 @@ class Board:
                                     print("NO RES RED")
                                     self.render_stat("NO RES RED")
                                     error.play()
-                                    pygame.time.wait(int(error.get_length() * 1000))
+                                    pygame.time.wait(int(error.get_length() * 100))
                             elif self.select == 23 and b_x_pos > 11:
                                 priest = PriestRed(coord_px, screen)
                                 if (self.res_r - priest.cell) >= 0:
@@ -531,7 +530,7 @@ class Board:
                                     print("NO RES RED")
                                     self.render_stat("NO RES RED")
                                     error.play()
-                                    pygame.time.wait(int(error.get_length() * 1000))
+                                    pygame.time.wait(int(error.get_length() * 100))
                             elif self.select == 24 and b_x_pos > 11:
                                 miner = MinerRed(coord_px, screen)
                                 if (self.res_r - miner.cell) >= 0:
@@ -543,7 +542,7 @@ class Board:
                                     print("NO RES RED")
                                     self.render_stat("NO RES RED")
                                     error.play()
-                                    pygame.time.wait(int(error.get_length() * 1000))
+                                    pygame.time.wait(int(error.get_length() * 100))
 
                         if need_render == 1:
                             map_units[coord] = warrior
@@ -568,13 +567,13 @@ class Board:
                             miner.render()
                             miner.all_sprites.draw(screen)
                             build.play()
-                            pygame.time.wait(int(build.get_length() * 1000))
+                            pygame.time.wait(int(build.get_length() * 100))
 
                         self.select = None
                         self.par_click = 0
                 elif self.par_click == 11 or self.par_click == 12:
                     click.play()
-                    pygame.time.wait(int(click.get_length() * 1000))
+                    pygame.time.wait(int(click.get_length() * 100))
                     try:
                         self.select_unit = map_units[coord]
                         if self.par_click == 11:
@@ -595,7 +594,7 @@ class Board:
                         print("TRY OTHER")
                         self.render_stat("TRY OTHER")
                         error.play()
-                        pygame.time.wait(int(error.get_length() * 1000))
+                        pygame.time.wait(int(error.get_length() * 100))
                 elif self.par_click == 110:
                     print("Ready to move", coord)
                     unit = None
@@ -680,7 +679,7 @@ class Board:
                             print("TRY OTHER")
                             self.render_stat("TRY OTHER")
                             error.play()
-                            pygame.time.wait(int(error.get_length() * 1000))
+                            pygame.time.wait(int(error.get_length() * 100))
 
                     if self.par_click == 121 and ((map_units[coord].name[-1] == "r"
                                                   or map_units[coord].name == "red_castle")
@@ -700,7 +699,7 @@ class Board:
                         print("TRY OTHER")
                         self.render_stat("         TRY OTHER")
                         error.play()
-                        pygame.time.wait(int(error.get_length() * 1000))
+                        pygame.time.wait(int(error.get_length() * 100))
 
                     if r_t_damage:
                         map_units[self.select_coord].put_damage(map_units[coord])
@@ -770,7 +769,7 @@ class Board:
 
             if self.par_click == 2:
                 button_unit.play()
-                pygame.time.wait(int(button_unit.get_length() * 1000))
+                pygame.time.wait(int(button_unit.get_length() * 100))
 
     def get_click(self, mouse_pos):
         self.get_cell(mouse_pos)
