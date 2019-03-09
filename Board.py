@@ -550,19 +550,19 @@ class Board:
                             warrior.render()
                             warrior.all_sprites.draw(screen)
                             spawn.play()
-                            pygame.time.wait(int(spawn.get_length() * 1000))
+                            pygame.time.wait(int(spawn.get_length() * 100))
                         elif need_render == 2:
                             map_units[coord] = archer
                             archer.render()
                             archer.all_sprites.draw(screen)
                             spawn.play()
-                            pygame.time.wait(int(spawn.get_length() * 1000))
+                            pygame.time.wait(int(spawn.get_length() * 100))
                         elif need_render == 3:
                             map_units[coord] = priest
                             priest.render()
                             priest.all_sprites.draw(screen)
                             spawn.play()
-                            pygame.time.wait(int(spawn.get_length() * 1000))
+                            pygame.time.wait(int(spawn.get_length() * 100))
                         elif need_render == 4:
                             map_units[coord] = miner
                             miner.render()
@@ -642,7 +642,6 @@ class Board:
                             and (abs(self.select_coord[0] - coord[0])
                                  + abs(self.select_coord[1] - coord[1])) == 1:
                         move.play()
-                        pygame.time.wait(int(move.get_length() * 1000))
                         pygame.draw.rect(self.screen, (0, 0, 0),
                                          (self.select_coord[0] * BOARD_S + 10,
                                           self.select_coord[1] * BOARD_S + 10, 30, 30))
