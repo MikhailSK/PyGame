@@ -2,14 +2,15 @@ import os
 from screen import *
 
 pygame.init()
-time = pygame.time.Clock()
 
+# словарь: координата клетки: объект юнита
 map_units = {}
 
-unit_sprites = pygame.sprite.Group()
-sprite = pygame.sprite.Sprite()
+# спрайт кнопки конца хода
+end_turn = pygame.sprite.Sprite()
 
 
+# фунция конца игры
 def win(winner):
     screen.fill((0, 0, 0))
     end_game_music.play(-1)
@@ -17,6 +18,7 @@ def win(winner):
     pygame.mixer.music.stop()
 
 
+# загрузка изображения в виде surface
 def load_image(name, color_key=None):
     fullname = os.path.join('data', name)
     try:
@@ -33,6 +35,7 @@ def load_image(name, color_key=None):
         raise SystemExit(message)
 
 
+# начальный экран
 class StartGame(pygame.sprite.Sprite):
     image = load_image("start_screen.png")
 
@@ -44,6 +47,7 @@ class StartGame(pygame.sprite.Sprite):
         self.rect.y = 0
 
 
+# конец игры: победа красного
 class EndGameRed(pygame.sprite.Sprite):
     image = load_image("end_screen_r.png")
 
@@ -55,6 +59,7 @@ class EndGameRed(pygame.sprite.Sprite):
         self.rect.y = 0
 
 
+# конец игры: победа синего
 class EndGameBlue(pygame.sprite.Sprite):
     image = load_image("end_screen_b.png")
 
@@ -66,6 +71,7 @@ class EndGameBlue(pygame.sprite.Sprite):
         self.rect.y = 0
 
 
+# спрайт-кнопка: создать юнита
 class CreateUnit(pygame.sprite.Sprite):
     image = load_image("create_unit.png")
 
@@ -77,6 +83,7 @@ class CreateUnit(pygame.sprite.Sprite):
         self.rect.y = 538
 
 
+# спрайт-кнопка: переместить юнита
 class MoveUnit(pygame.sprite.Sprite):
     image = load_image("move_unit.png")
 
@@ -88,6 +95,7 @@ class MoveUnit(pygame.sprite.Sprite):
         self.rect.y = 538
 
 
+# спрайт-кнопка: атаковать юнита
 class DamageUnit(pygame.sprite.Sprite):
     image = load_image("damage_unit.png")
 
@@ -99,6 +107,7 @@ class DamageUnit(pygame.sprite.Sprite):
         self.rect.y = 538
 
 
+# спрайт-кнопка: warrior blue
 class WarriorUnitSelectB(pygame.sprite.Sprite):
     image = load_image("warrior_b.png")
 
@@ -110,6 +119,7 @@ class WarriorUnitSelectB(pygame.sprite.Sprite):
         self.rect.y = 541
 
 
+# спрайт-кнопка: warrior red
 class WarriorUnitSelectR(pygame.sprite.Sprite):
     image = load_image("warrior_r.png")
 
@@ -121,6 +131,7 @@ class WarriorUnitSelectR(pygame.sprite.Sprite):
         self.rect.y = 541
 
 
+# спрайт-кнопка: archer blue
 class ArcherUnitSelectB(pygame.sprite.Sprite):
     image = load_image("archer_b.png")
 
@@ -132,6 +143,7 @@ class ArcherUnitSelectB(pygame.sprite.Sprite):
         self.rect.y = 576
 
 
+# спрайт-кнопка: archer red
 class ArcherUnitSelectR(pygame.sprite.Sprite):
     image = load_image("archer_r.png")
 
@@ -143,6 +155,7 @@ class ArcherUnitSelectR(pygame.sprite.Sprite):
         self.rect.y = 576
 
 
+# спрайт-кнопка: priest blue
 class PriestUnitSelectB(pygame.sprite.Sprite):
     image = load_image("priest_b.png")
 
@@ -154,6 +167,7 @@ class PriestUnitSelectB(pygame.sprite.Sprite):
         self.rect.y = 541
 
 
+# спрайт-кнопка: priest red
 class PriestUnitSelectR(pygame.sprite.Sprite):
     image = load_image("priest_r.png")
 
@@ -165,6 +179,7 @@ class PriestUnitSelectR(pygame.sprite.Sprite):
         self.rect.y = 541
 
 
+# спрайт-кнопка: miner blue
 class MinerUnitSelectB(pygame.sprite.Sprite):
     image = load_image("miner_b.png")
 
@@ -176,6 +191,7 @@ class MinerUnitSelectB(pygame.sprite.Sprite):
         self.rect.y = 576
 
 
+# спрайт-кнопка: miner blue
 class MinerUnitSelectR(pygame.sprite.Sprite):
     image = load_image("miner_r.png")
 
@@ -187,35 +203,57 @@ class MinerUnitSelectR(pygame.sprite.Sprite):
         self.rect.y = 576
 
 
+# класс юнита, от него наследуются все другие классы юнитов
 class MainUnit:
     def __init__(self, screen):
+        # имя
         self.name = ""
+        # урон
         self.damage = 0
+        # перемещение
         self.move = 0
+        # координаты в клетках
         self.coord = [1, 1]
+        # координаты в px
         self.x, self.y = self.coord[0] * BOARD_S + 10, self.coord[1] * BOARD_S + 10
+        # тип юнита
         self.type = -1
+        # радиус атаки
         self.atk_range = 0
+        # здоровье
         self.health = 1
+        # максимальное здоровье
         self.max_health = 1
+        # экран
         self.screen = screen
+        # стоимость в ресурсах
         self.cell = 0
+        # насколько переместился за ход
         self.moved = 0
+        # сколько раз атаковал за ход
         self.attacked = 0
+        # сколько ресурсов в ход будет добавлять
         self.res_in_turn = 0
 
+    # функция перемещения
     def move(self):
         pass
 
+    # функция получения урона
     def get_damage(self, damage):
         self.health -= damage
         if self.health <= 0:
             self.dead()
 
+    # функция атаки
     def put_damage(self, unit_damaged):
+        # x атакующего в клетках
         x_1 = (self.coord[0] + 10) // 30
+        # y атакующего в клетках
         y_1 = (self.coord[1] + 10) // 30
+        # x атакуемого в клетках
         x_2 = (unit_damaged.coord[0] + 10) // 30
+        # н атакуемого в клетках
         y_2 = (unit_damaged.coord[1] + 10) // 30
         if abs(x_1 - x_2) + abs(y_1 - y_2) <= self.atk_range:
             self.attacked += 1
@@ -234,14 +272,22 @@ class MainUnit:
     def render(self, coord, health):
         pass
 
+    # функция смерти
     def dead(self):
+        # координаты в px
         self.x, self.y = self.coord[0], self.coord[1]
+        # координаты в клетках
         x_b, y_b = (self.coord[0] + 10) // 30, (self.coord[1] + 10) // 30
+
+        # убираем этого юнита их map_units
         map_units[(x_b, y_b)] = None
         map_units.pop((x_b, y_b))
+
+        # очищаем клетку от юнита
         pygame.draw.rect(self.screen, (0, 0, 0), (self.x, self.y, 30, 30))
         pygame.display.flip()
         print("DEAD" + self.name)
+        # звук смерти/разрушения
         if "miner" in self.name:
             u_break.play()
             pygame.time.wait(int(u_break.get_length() * 1000))
@@ -249,6 +295,7 @@ class MainUnit:
             death.play()
             pygame.time.wait(int(death.get_length() * 1000))
 
+    # показ ноформации о юните
     def get_info(self):
         print("INFO GET")
         button.play()
@@ -333,6 +380,7 @@ class MainUnit:
         screen.blit(text, (text_x, text_y))
 
 
+# Горы загрузка
 class WallMg(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -340,6 +388,7 @@ class WallMg(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# Горы
 class Wall(MainUnit):
     def __init__(self, coord, screen):
         super().__init__(screen)
@@ -355,6 +404,7 @@ class Wall(MainUnit):
         m_wall.rect.y = self.coord[1]
 
 
+# замок синего загрузка
 class CastleMgBlue(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -362,6 +412,7 @@ class CastleMgBlue(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# замок синего
 class CastleBlue(MainUnit):
     def __init__(self, coord, screen):
         super().__init__(screen)
@@ -389,6 +440,7 @@ class CastleBlue(MainUnit):
         win(winner)
 
 
+# замок красного загрузка
 class CastleMgRed(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -396,6 +448,7 @@ class CastleMgRed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# замок красного
 class CastleRed(MainUnit):
     def __init__(self, coord, screen):
         super().__init__(screen)
@@ -423,6 +476,7 @@ class CastleRed(MainUnit):
         win("Blue")
 
 
+# воин красный загрузка
 class WarriorMgRed(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -430,6 +484,7 @@ class WarriorMgRed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# воин красный
 class WarriorRed(MainUnit):
     def __init__(self, coord, screen, health=5, moved=0, attacked=0):
         super().__init__(screen)
@@ -454,6 +509,7 @@ class WarriorRed(MainUnit):
         warrior_r.rect.y = self.coord[1] + 1
 
 
+# воин красный загрузка
 class WarriorMgRed(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -461,6 +517,7 @@ class WarriorMgRed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# воин красный
 class WarriorBlue(MainUnit):
     def __init__(self, coord, screen, health=5, moved=0, attacked=0):
         super().__init__(screen)
@@ -485,6 +542,7 @@ class WarriorBlue(MainUnit):
         warrior_b.rect.y = self.coord[1] + 1
 
 
+# лучник синий загрузка
 class ArcherMgBlue(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -492,18 +550,19 @@ class ArcherMgBlue(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# лучник синий
 class ArcherBlue(MainUnit):
     def __init__(self, coord, screen, health=4, moved=0, attacked=0):
         super().__init__(screen)
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_b"
         self.coord = coord
-        self.damage = 100
+        self.damage = 1
         self.move = 2
         self.moved = moved
         self.cell = 3
         self.attacked = attacked
-        self.atk_range = 200
+        self.atk_range = 2
         #
         self.health = health
         #
@@ -516,6 +575,7 @@ class ArcherBlue(MainUnit):
         archer_b.rect.y = self.coord[1] + 1
 
 
+# лучник красный загрузка
 class ArcherMgRed(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -523,6 +583,7 @@ class ArcherMgRed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# лучник красный
 class ArcherRed(MainUnit):
     def __init__(self, coord, screen, health=4, moved=0, attacked=0):
         super().__init__(screen)
@@ -547,6 +608,7 @@ class ArcherRed(MainUnit):
         archer_r.rect.y = self.coord[1] + 1
 
 
+# священник синий загрузка
 class PriestMgBlue(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -554,6 +616,7 @@ class PriestMgBlue(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# священник синий
 class PriestBlue(MainUnit):
     def __init__(self, coord, screen, health=4, moved=0, attacked=0):
         super().__init__(screen)
@@ -578,6 +641,7 @@ class PriestBlue(MainUnit):
         priest_b.rect.y = self.coord[1] + 1
 
 
+# священник красный загрузка
 class PriestMgRed(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -585,6 +649,7 @@ class PriestMgRed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# священник красный
 class PriestRed(MainUnit):
     def __init__(self, coord, screen, health=4, moved=0, attacked=0):
         super().__init__(screen)
@@ -609,6 +674,7 @@ class PriestRed(MainUnit):
         priest_r.rect.y = self.coord[1] + 1
 
 
+# рудник красный загрузка
 class MinerMgRed(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -616,6 +682,7 @@ class MinerMgRed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# рудник красный
 class MinerRed(MainUnit):
     def __init__(self, coord, screen, health=8, moved=0, attacked=0):
         super().__init__(screen)
@@ -641,6 +708,7 @@ class MinerRed(MainUnit):
         miner_r.rect.y = self.coord[1] + 1
 
 
+# рудник синий загрузка
 class MinerMgBlue(pygame.sprite.Sprite):
     def __init__(self, group, parent):
         super().__init__(group)
@@ -648,6 +716,7 @@ class MinerMgBlue(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+# рудник синий
 class MinerBlue(MainUnit):
     def __init__(self, coord, screen, health=8, moved=0, attacked=0):
         super().__init__(screen)
