@@ -12,15 +12,18 @@ running = True
 FPS = 20
 par = 0
 turn = 0
+poq = 0
 
 start_game = StartGame(all_sprites)
 sap = 0
 
 while running:
+    poq += 1
     if sap == 0:
         pygame.mixer.music.play(-1)
         sap = 1
     all_sprites.draw(screen)
+    unit_sprites.draw(screen)
     if par == 0 and turn > 0:
         board.render()
     for event in pygame.event.get():
@@ -93,4 +96,10 @@ while running:
         if turn == -4:
             end_screen = EndGameRed(all_sprites)
     pygame.display.flip()
+    if poq == 15:
+        for i in map_units.keys():
+            map_units[i].render()
+            map_units[i].all_sprites.draw(screen)
+        pygame.display.flip()
+        poq = 0
     clock.tick(FPS)
