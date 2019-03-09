@@ -2,12 +2,17 @@ import numpy as np
 from unit import *
 from screen import *
 
+# список со стенами координаты
 arr_wall = [[11, 16], [11, 0], [11, 4], [11, 12], [7, 10],
             [7, 6], [15, 6], [15, 10], [19, 2],
             [19, 14], [3, 14], [3, 2], [11, 8]]
+# список с замками координаты
 arr_castle = [[0, 8], [22, 8]]
 
+# группа спрайтов
 all_sprites = pygame.sprite.Group()
+
+# кнопки управления
 warrior_select_r = WarriorUnitSelectR(all_sprites)
 warrior_select_b = WarriorUnitSelectB(all_sprites)
 archer_select_r = ArcherUnitSelectR(all_sprites)
@@ -30,41 +35,54 @@ class Board:
                       11: (107, 24, 255), 22: (255, 93, 25),
                       12: (0, 150, 50), "frame": (40, 154, 65),
                       33: (226, 18, 185)}
-        self.xod = -1
+        # ход какого игрока сейчас
         self.turn = 1
+        # ширина поля в клетках
         self.width_board = width
+        # высота поля в клетках
         self.height_board = height
+        # ширина поля в px
         self.width = width * BOARD_S + 10
+        # высота поля в px
         self.height = height * BOARD_S + 10
+        # numpy array поля для хранения в нем статусов клеток
         self.board = np.zeros((self.width_board, self.height_board))
-        self.board_b = self.board
-        # значения по умолчанию
+
+        # отступ слева в px
         self.left = 10
+        # отступ сверху в px
         self.top = 10
+        # размер клетки в px
         self.cell_size = 30
+        # координаты в px
         self.b_x_y = None
+        # отрисовано ли поле
         self.is_map_rendered = 0
-        self.arr = []
+        # параметр клика
         self.par_click = 0
+        # ресурсы красного
         self.res_r = 2
+        # + ресурсы красного в ход
         self.res_r_add = 1
+        # ресурсы синего
         self.res_b = 2
+        # + ресурсы синего в ход
         self.res_b_add = 1
+        # параметр выбора
         self.select = None
+        # выбранный юнит
         self.select_unit = None
+        # выбранные координаты
         self.select_coord = None
+        # конец игры или нет
         self.end = 0
 
-    # настройка внешнего вида
-    def set_view(self, left, top, cell_size):
-        self.left = left
-        self.top = top
-        self.cell_size = cell_size
-
+    # отрисовка поля и кнопок
     def render(self):
         if self.end == 0:
             step = self.cell_size
             x_pos, y_pos = 0, 0
+            # отрисовка подсветки соседних с занятыми клеток
             for x in range(self.left, self.width_board * step, step):
                 y_pos = 0
                 for y in range(self.top, self.height_board * step, step):
@@ -248,6 +266,7 @@ class Board:
 
             font = pygame.font.Font(None, 28)
 
+            # показ рисурсов
             if self.turn == 1:
                 text = font.render("RES-B: " + str(self.res_b)
                                    + "(+" + str(self.res_b_add) + ")",
@@ -260,6 +279,7 @@ class Board:
             text_y = 543
             screen.blit(text, (text_x, text_y))
 
+            # отрисовка начального поля и кнопок
             if self.is_map_rendered == 0:
 
                 pygame.draw.rect(screen, (190, 245, 116),
@@ -309,11 +329,11 @@ class Board:
                                  (5, 520, 700, 5))
                 pygame.display.flip()
 
-                sprite.image = load_image("end_game.png")
-                sprite.rect = sprite.image.get_rect()
-                all_sprites.add(sprite)
-                sprite.rect.x = 733
-                sprite.rect.y = 360
+                end_turn.image = load_image("end_turn.png")
+                end_turn.rect = end_turn.image.get_rect()
+                all_sprites.add(end_turn)
+                end_turn.rect.x = 733
+                end_turn.rect.y = 360
                 all_sprites.draw(screen)
 
                 self.is_map_rendered = 1
@@ -322,6 +342,7 @@ class Board:
         elif self.end == 2:
             self.turn = -4
 
+    # уведомления
     @staticmethod
     def render_stat(text):
         pygame.draw.rect(screen, (152, 251, 152), (700, 589, 230, 35))
@@ -332,6 +353,7 @@ class Board:
         text_y = 600
         screen.blit(text, (text_x, text_y))
 
+    # реакция на нажатие
     def get_cell(self, mouse_position):
         x_pos, y_pos = mouse_position
         if self.par_click == 0 or self.par_click == 2\
@@ -342,7 +364,7 @@ class Board:
                 or (y_pos <= 5 or y_pos >= self.height - 5))\
                     and self.select is None:
                     if self.par_click != 2:
-                        if sprite.rect.collidepoint((x_pos, y_pos)):
+                        if end_turn.rect.collidepoint((x_pos, y_pos)):
                             sound_change_turn.play()
                             pygame.time.wait(int(sound_change_turn.get_length() * 1000))
                             print("END TURN")
@@ -415,7 +437,6 @@ class Board:
                 self.b_x_y = []
                 self.b_x_y.append(b_x_pos)
                 self.b_x_y.append(b_y_pos)
-                self.arr.append([b_x_pos, b_y_pos])
                 coord = (b_x_pos, b_y_pos)
                 coord_px = (b_x_pos * BOARD_S + 10, b_y_pos * BOARD_S + 10)
                 if self.par_click == 2 and b_x_pos <= 22 and b_y_pos <= 16:
