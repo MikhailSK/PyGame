@@ -20,24 +20,24 @@ pygame.mixer.init()
 clock = pygame.time.Clock()
 
 # главная тема игры
-main_theme = pygame.mixer.music.load("music\\main3.mp3")
+main_theme = pygame.mixer.music.load("music/main3.mp3")
 
 
 # другие звуки в игре
-sound_change_turn = pygame.mixer.Sound("music\\button_end.wav")
-archer_attack = pygame.mixer.Sound("music\\archer_attack.wav")
-warrior_attack = pygame.mixer.Sound("music\\warrior_attack.wav")
-heal = pygame.mixer.Sound("music\\heal.wav")
-build = pygame.mixer.Sound("music\\build.wav")
-spawn = pygame.mixer.Sound("music\\spawn.wav")
-u_break = pygame.mixer.Sound("music\\break.wav")
-death = pygame.mixer.Sound("music\\death.wav")
-end_game_music = pygame.mixer.Sound("music\\end_game.wav")
-button = pygame.mixer.Sound("music\\button.wav")
-error = pygame.mixer.Sound("music\\error.wav")
-button_unit = pygame.mixer.Sound("music\\button.wav")
-move = pygame.mixer.Sound("music\\move.wav")
-click = pygame.mixer.Sound("music\\click.wav")
+sound_change_turn = pygame.mixer.Sound("music/button_end.wav")
+archer_attack = pygame.mixer.Sound("music/archer_attack.wav")
+warrior_attack = pygame.mixer.Sound("music/warrior_attack.wav")
+heal = pygame.mixer.Sound("music/heal.wav")
+build = pygame.mixer.Sound("music/build.wav")
+spawn = pygame.mixer.Sound("music/spawn.wav")
+u_break = pygame.mixer.Sound("music/break.wav")
+death = pygame.mixer.Sound("music/death.wav")
+end_game_music = pygame.mixer.Sound("music/end_game.wav")
+button = pygame.mixer.Sound("music/button.wav")
+error = pygame.mixer.Sound("music/error.wav")
+button_unit = pygame.mixer.Sound("music/button.wav")
+move = pygame.mixer.Sound("music/move.wav")
+click = pygame.mixer.Sound("music/click.wav")
 
 
 # создание окошка
