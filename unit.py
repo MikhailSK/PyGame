@@ -37,7 +37,7 @@ def load_image(name, color_key=None):
 
 # начальный экран
 class StartGame(pygame.sprite.Sprite):
-    image = load_image("start_screen.png")
+    image = load_image("start_screen1.png")
 
     def __init__(self, group):
         super().__init__(group)
@@ -49,7 +49,7 @@ class StartGame(pygame.sprite.Sprite):
 
 # конец игры: победа красного
 class EndGameRed(pygame.sprite.Sprite):
-    image = load_image("end_screen_r.png")
+    image = load_image("end_screen_r1.png")
 
     def __init__(self, group):
         super().__init__(group)
@@ -61,7 +61,7 @@ class EndGameRed(pygame.sprite.Sprite):
 
 # конец игры: победа синего
 class EndGameBlue(pygame.sprite.Sprite):
-    image = load_image("end_screen_b.png")
+    image = load_image("end_screen_b1.png")
 
     def __init__(self, group):
         super().__init__(group)
@@ -397,9 +397,29 @@ class Wall(MainUnit):
         self.name = "wall"
         self.health = 900000
         self.coord = coord
-        self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 2
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "_1.png")
+            self.par_image = 3
+        elif self.par_image == 3:
+            self.image = load_image(self.name + "_2.png")
+            self.par_image = 4
+        elif self.par_image == 4:
+            self.image = load_image(self.name + "_3.png")
+            self.par_image = 5
+        elif self.par_image == 5:
+            self.image = load_image(self.name + "_4.png")
+            self.par_image = 6
+        elif self.par_image == 6:
+            self.image = load_image(self.name + "_4.png")
+            self.par_image = 7
+        else:
+            self.image = load_image(self.name + "_6.png")
+            self.par_image = 1
         m_wall = WallMg(self.all_sprites, self)
         m_wall.rect.x = self.coord[0]
         m_wall.rect.y = self.coord[1]
@@ -424,9 +444,17 @@ class CastleBlue(MainUnit):
         self.health = 15
         #
         self.max_health = 15
-        self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 2
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 3
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         m_castle = CastleMgBlue(self.all_sprites, self)
         m_castle.rect.x = self.coord[0] + 1
         m_castle.rect.y = self.coord[1] + 1
@@ -460,9 +488,17 @@ class CastleRed(MainUnit):
         self.health = 15
         #
         self.max_health = 15
-        self.image = load_image(self.name + ".png")
 
     def render(self, **kwargs):
+        if self.par_image == 1:
+            self.image = load_image(self.name + ".png")
+            self.par_image = 2
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 3
+        else:
+            self.image = load_image(self.name + "1.png")
+            self.par_image = 1
         m_castle = CastleMgRed(self.all_sprites, self)
         m_castle.rect.x = self.coord[0] + 1
         m_castle.rect.y = self.coord[1] + 1
@@ -508,9 +544,12 @@ class WarriorRed(MainUnit):
         if self.par_image == 1:
             self.image = load_image(self.name + ".png")
             self.par_image = 0
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 1
         else:
             self.image = load_image(self.name + "1.png")
-            self.par_image = 1
+            self.par_image = 2
         warrior_r = CastleMgRed(self.all_sprites, self)
         warrior_r.rect.x = self.coord[0] + 1
         warrior_r.rect.y = self.coord[1] + 1
@@ -547,9 +586,12 @@ class WarriorBlue(MainUnit):
         if self.par_image == 1:
             self.image = load_image(self.name + ".png")
             self.par_image = 0
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 1
         else:
             self.image = load_image(self.name + "1.png")
-            self.par_image = 1
+            self.par_image = 2
         warrior_b = CastleMgRed(self.all_sprites, self)
         warrior_b.rect.x = self.coord[0] + 1
         warrior_b.rect.y = self.coord[1] + 1
@@ -586,9 +628,12 @@ class ArcherBlue(MainUnit):
         if self.par_image == 1:
             self.image = load_image(self.name + ".png")
             self.par_image = 0
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 1
         else:
             self.image = load_image(self.name + "1.png")
-            self.par_image = 1
+            self.par_image = 2
         archer_b = ArcherMgBlue(self.all_sprites, self)
         archer_b.rect.x = self.coord[0] + 1
         archer_b.rect.y = self.coord[1] + 1
@@ -625,9 +670,12 @@ class ArcherRed(MainUnit):
         if self.par_image == 1:
             self.image = load_image(self.name + ".png")
             self.par_image = 0
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 1
         else:
             self.image = load_image(self.name + "1.png")
-            self.par_image = 1
+            self.par_image = 2
         archer_r = ArcherMgRed(self.all_sprites, self)
         archer_r.rect.x = self.coord[0] + 1
         archer_r.rect.y = self.coord[1] + 1
@@ -664,9 +712,12 @@ class PriestBlue(MainUnit):
         if self.par_image == 1:
             self.image = load_image(self.name + ".png")
             self.par_image = 0
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 1
         else:
             self.image = load_image(self.name + "1.png")
-            self.par_image = 1
+            self.par_image = 2
         priest_b = PriestMgBlue(self.all_sprites, self)
         priest_b.rect.x = self.coord[0] + 1
         priest_b.rect.y = self.coord[1] + 1
@@ -703,9 +754,12 @@ class PriestRed(MainUnit):
         if self.par_image == 1:
             self.image = load_image(self.name + ".png")
             self.par_image = 0
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 1
         else:
             self.image = load_image(self.name + "1.png")
-            self.par_image = 1
+            self.par_image = 2
         priest_r = PriestMgRed(self.all_sprites, self)
         priest_r.rect.x = self.coord[0] + 1
         priest_r.rect.y = self.coord[1] + 1
@@ -743,9 +797,12 @@ class MinerRed(MainUnit):
         if self.par_image == 1:
             self.image = load_image(self.name + ".png")
             self.par_image = 0
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 1
         else:
             self.image = load_image(self.name + "1.png")
-            self.par_image = 1
+            self.par_image = 2
         miner_r = MinerMgRed(self.all_sprites, self)
         miner_r.rect.x = self.coord[0] + 1
         miner_r.rect.y = self.coord[1] + 1
@@ -782,9 +839,12 @@ class MinerBlue(MainUnit):
         if self.par_image == 1:
             self.image = load_image(self.name + ".png")
             self.par_image = 0
+        elif self.par_image == 2:
+            self.image = load_image(self.name + "2.png")
+            self.par_image = 1
         else:
             self.image = load_image(self.name + "1.png")
-            self.par_image = 1
+            self.par_image = 2
         miner_r = MinerMgRed(self.all_sprites, self)
         miner_r.rect.x = self.coord[0] + 1
         miner_r.rect.y = self.coord[1] + 1
