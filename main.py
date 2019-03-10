@@ -96,7 +96,7 @@ while running:
         if turn == -4:
             end_screen = EndGameRed(all_sprites)
     pygame.display.flip()
-    if poq == 15:
+    if poq == 15 and board.end == 0:
         for i in map_units.keys():
             map_units[i].render()
             map_units[i].all_sprites.draw(screen)

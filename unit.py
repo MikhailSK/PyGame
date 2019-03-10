@@ -49,7 +49,7 @@ class StartGame(pygame.sprite.Sprite):
 
 # конец игры: победа красного
 class EndGameRed(pygame.sprite.Sprite):
-    image = load_image("end_screen_r1.png")
+    image = load_image("end_screen_b1.png")
 
     def __init__(self, group):
         super().__init__(group)
@@ -61,11 +61,11 @@ class EndGameRed(pygame.sprite.Sprite):
 
 # конец игры: победа синего
 class EndGameBlue(pygame.sprite.Sprite):
-    image = load_image("end_screen_b1.png")
+    image = load_image("end_screen_r1.png")
 
     def __init__(self, group):
         super().__init__(group)
-        self.image = EndGameRed.image
+        self.image = EndGameBlue.image
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
@@ -612,12 +612,12 @@ class ArcherBlue(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_b"
         self.coord = coord
-        self.damage = 1
+        self.damage = 100
         self.move = 2
         self.moved = moved
         self.cell = 3
         self.attacked = attacked
-        self.atk_range = 2
+        self.atk_range = 200
         #
         self.health = health
         #
@@ -654,12 +654,12 @@ class ArcherRed(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_r"
         self.coord = coord
-        self.damage = 1
+        self.damage = 100
         self.move = 2
         self.moved = moved
         self.cell = 3
         self.attacked = attacked
-        self.atk_range = 2
+        self.atk_range = 200
         #
         self.health = health
         #
