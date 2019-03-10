@@ -458,7 +458,7 @@ class Board:
                                     need_render = 1
                                 else:
                                     print("NO RES BLUE")
-                                    self.render_stat("NO RES BLUE")
+                                    self.render_stat("      NO RES BLUE")
                                     error.play()
                                     pygame.time.wait(int(error.get_length() * 1000))
                             elif self.select == 12 and b_x_pos < 11:
@@ -469,7 +469,7 @@ class Board:
                                     need_render = 2
                                 else:
                                     print("NO RES BLUE")
-                                    self.render_stat("NO RES BLUE")
+                                    self.render_stat("      NO RES BLUE")
                                     error.play()
                                     pygame.time.wait(int(error.get_length() * 100))
                             elif self.select == 13 and b_x_pos < 11:
