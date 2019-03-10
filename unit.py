@@ -612,12 +612,12 @@ class ArcherBlue(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_b"
         self.coord = coord
-        self.damage = 100
+        self.damage = 1
         self.move = 2
         self.moved = moved
         self.cell = 3
         self.attacked = attacked
-        self.atk_range = 200
+        self.atk_range = 2
         #
         self.health = health
         #
@@ -654,12 +654,12 @@ class ArcherRed(MainUnit):
         self.all_sprites = pygame.sprite.Group()
         self.name = "archer_r"
         self.coord = coord
-        self.damage = 100
+        self.damage = 1
         self.move = 2
         self.moved = moved
         self.cell = 3
         self.attacked = attacked
-        self.atk_range = 200
+        self.atk_range = 2
         #
         self.health = health
         #
