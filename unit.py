@@ -974,6 +974,7 @@ class MinerBlue(MainUnit):
         self.atk_range = 0
         self.health = health
         self.max_health = 8
+        self.image = None
 
     def render(self, **kwargs):
 
