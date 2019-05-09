@@ -653,7 +653,7 @@ class WarriorRed(MainUnit):
             self.image = load_image(self.name + "1.png")
             self.par_image = 2
 
-        warrior_r = CastleMgRed(self.all_sprites, self)
+        warrior_r = WarriorMgRed(self.all_sprites, self)
         warrior_r.rect.x = self.coord[0] + 1
         warrior_r.rect.y = self.coord[1] + 1
 
@@ -701,7 +701,7 @@ class WarriorBlue(MainUnit):
             self.image = load_image(self.name + "1.png")
             self.par_image = 2
 
-        warrior_b = CastleMgRed(self.all_sprites, self)
+        warrior_b = WarriorMgBlue(self.all_sprites, self)
         warrior_b.rect.x = self.coord[0] + 1
         warrior_b.rect.y = self.coord[1] + 1
 
